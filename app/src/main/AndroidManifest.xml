@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        activity del dashboard-->
+        <activity android:name=".Dashboard" />
     </application>
 
 </manifest>
