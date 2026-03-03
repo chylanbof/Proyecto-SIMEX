@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
 import android.content.Intent
+import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,10 +19,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val textBoxUsuario = findViewById<EditText>(R.id.usuarioTextBox)
 
+        val textBoxPassword = findViewById<EditText>(R.id.contraseñaTextBox)
         val btnIniciarSesion = findViewById<ImageView>(R.id.iniciarSesion)
         btnIniciarSesion.setOnClickListener {
+            val usuario = textBoxUsuario.text.toString()
             val intent = Intent(this, Dashboard::class.java)
+            intent.putExtra("usuario_nombre", usuario)
             startActivity(intent)
         }
     }
