@@ -5,15 +5,47 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/inicio"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/icono"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/icono"
+        android:layout_marginBottom="100dp"/>
+
+
+    <EditText
+        android:id="@+id/usuarioTextBox"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Usuario"
+        android:background="@drawable/edittext_borde_redondo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="500dp"/>
+
+    <EditText
+        android:id="@+id/contraseñaTextBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:background="@drawable/edittext_borde_redondo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/usuarioTextBox"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="32dp"/>
+
+    <ImageView
+        android:id="@+id/iniciarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/iniciarsesion"
+        android:layout_marginTop="600dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
