@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoSIMEX">
         <activity
-            android:name=".MainActivity"
+            android:name=".Notificaciones"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +22,7 @@
         </activity>
 <!--        activity del dashboard-->
         <activity android:name=".Dashboard" />
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
