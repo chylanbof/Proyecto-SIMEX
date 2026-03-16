@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageView
 import android.content.Intent
+import android.widget.Button
 import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val textBoxUsuario = findViewById<EditText>(R.id.usuarioTextBox)
 
         val textBoxPassword = findViewById<EditText>(R.id.contraseñaTextBox)
-        val btnIniciarSesion = findViewById<ImageView>(R.id.iniciarSesion)
+        val btnIniciarSesion = findViewById<Button>(R.id.btnLogin)
         btnIniciarSesion.setOnClickListener {
             val usuario = textBoxUsuario.text.toString()
             val intent = Intent(this, Dashboard::class.java)
@@ -30,4 +31,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-}
+} //comentario para guardar la rama
