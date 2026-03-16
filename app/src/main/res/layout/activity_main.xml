@@ -51,6 +51,8 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:background="@drawable/bg_button_login"
+        app:backgroundTint="@null"
+
 
         android:drawableLeft="@drawable/ic_star"
         android:drawablePadding="10dp"

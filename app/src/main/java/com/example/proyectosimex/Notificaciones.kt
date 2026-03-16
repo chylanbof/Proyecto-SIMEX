@@ -11,8 +11,8 @@ class Notificaciones : AppCompatActivity(){
         setContentView(R.layout.activity_notificaciones)
 
         //Variable para llamar al boton externo
-        val btnNotificaciones = findViewById<Button>(R.id.btnShared)
-        btnNotificaciones.text = "Perfil"
+
+
 
     }
 }

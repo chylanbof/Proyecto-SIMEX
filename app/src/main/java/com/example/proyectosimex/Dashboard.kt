@@ -14,7 +14,6 @@ class Dashboard : AppCompatActivity() {
 
         val usuario = intent.getStringExtra("usuario_nombre") ?: ""
 
-        val textViewBienvenido = findViewById<TextView>(R.id.textViewBienvenido)
-        textViewBienvenido.text = "Bienvenido, \n$usuario!"
+        val textViewBienvenido = findViewById<TextView>(R.id.layoutDeArriba)
     }
 }
