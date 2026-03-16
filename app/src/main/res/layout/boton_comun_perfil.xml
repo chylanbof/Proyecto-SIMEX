@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/inicio"
+        android:src="@drawable/perfilback"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,12 +25,21 @@
         android:layout_marginStart="24dp"
         android:background="@drawable/rounded_button"
         app:backgroundTint="@null"
-        android:src="@drawable/ic_notificaciones"
+        android:src="@drawable/ic_atras"
         android:scaleType="fitCenter"
         android:padding="12dp"
-        android:contentDescription="Ver notificaciones"
+        android:contentDescription="Atras"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/header_scrim"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtHeaderTitle"
@@ -40,7 +49,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Bienvenido"
+        android:text="Perfil"
         android:textColor="#FFFFFF"
         android:textSize="45sp"
         android:textStyle="bold"
@@ -59,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/perfil"
+            android:id="@+id/cerrarSesion"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginEnd="8dp"
@@ -69,28 +78,13 @@
             android:paddingHorizontal="12dp"
             android:drawableStart="@drawable/ic_perfil_xml"
             android:drawablePadding="8dp"
-            android:text="Perfil"
+            android:text="Cerrar Sesion"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textAllCaps="false"
             app:drawableTint="#FFFFFF"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/miniJuego"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#145699"
-            android:minWidth="0dp"
-            android:paddingHorizontal="12dp"
-            android:drawableStart="@drawable/ic_juego"
-            android:drawablePadding="8dp"
-            android:text="Mini Juego"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textAllCaps="false"/>
-
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

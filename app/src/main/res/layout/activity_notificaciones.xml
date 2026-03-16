@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#AFC5D7">
-
-    <include
-        android:id="@+id/layoutBtnNotificaciones"
-        layout="@layout/boton_comun"
-        />
+    android:layout_height="340dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
