@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class Dashboard : AppCompatActivity() {
 
@@ -14,6 +15,8 @@ class Dashboard : AppCompatActivity() {
 
         val usuario = intent.getStringExtra("usuario_nombre") ?: ""
 
-        val textViewBienvenido = findViewById<TextView>(R.id.layoutDeArriba)
+        val textViewBienvenido = findViewById<TextView>(R.id.txtHeaderTitle)
+        textViewBienvenido.text = "Bienvenido, $usuario"
+
     }
 }
