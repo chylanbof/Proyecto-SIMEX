@@ -1,6 +1,7 @@
 package com.example.proyectosimex
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class Dashboard : AppCompatActivity() {
@@ -25,10 +27,16 @@ class Dashboard : AppCompatActivity() {
         textViewBienvenido.text = "Bienvenido, $usuario"
 
 
-        //Boton desplegable notificaciones
         val btnNotificaciones = findViewById<ImageButton>(R.id.btnNotificaciones)
         btnNotificaciones.setOnClickListener {
             mostrarMenu(btnNotificaciones)
+        }
+
+        val btnPerfil = findViewById<AppCompatButton>(R.id.perfil)
+        btnPerfil.setOnClickListener {
+            val intent = Intent(this, Perfil::class.java)
+            intent.putExtra("usuario_nombre", usuario)
+            startActivity(intent)
         }
 
     }
@@ -46,16 +54,13 @@ class Dashboard : AppCompatActivity() {
 
         val location = IntArray(2)
 
-        // Obtenemos la posición del botón en la pantalla
         anchor.getLocationInWindow(location)
         val buttonX = location[0]
         val buttonY = location[1]
 
-        // Calculamos la posición deseada
-        val posX = buttonX + anchor.width + 10 // 10px de margen
+        val posX = buttonX + anchor.width + 10
         val posY = buttonY
 
-        // Usamos showAtLocation
         popupWindow.showAtLocation(anchor, android.view.Gravity.NO_GRAVITY, posX, posY)
     }
 }

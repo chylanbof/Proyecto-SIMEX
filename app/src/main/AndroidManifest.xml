@@ -23,6 +23,7 @@
 <!--        activity del dashboard-->
         <activity android:name=".Dashboard" />
         <activity android:name=".Notificaciones"/>
+        <activity android:name=".Perfil"/>
     </application>
 
 </manifest>
