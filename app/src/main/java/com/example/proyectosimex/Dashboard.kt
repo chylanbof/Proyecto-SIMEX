@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class Dashboard : AppCompatActivity() {
@@ -36,6 +37,11 @@ class Dashboard : AppCompatActivity() {
         btnPerfil.setOnClickListener {
             val intent = Intent(this, Perfil::class.java)
             intent.putExtra("usuario_nombre", usuario)
+            startActivity(intent)
+        }
+
+        findViewById<CardView>(R.id.cardHistorial).setOnClickListener {
+            val intent = Intent(this, Historial::class.java)
             startActivity(intent)
         }
 

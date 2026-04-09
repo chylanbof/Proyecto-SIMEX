@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/imgPedido"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_historial"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNombrePedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedido EC002"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#1565C0"/>
+
+            <TextView
+                android:id="@+id/tvOrigen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Origen: New York"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+
+            <TextView
+                android:id="@+id/tvDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Destino: EEUU"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnOpciones"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_mas_opciones"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Opciones"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
