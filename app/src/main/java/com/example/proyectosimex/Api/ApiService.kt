@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("usuarios")
+    @GET("api/Usuaris/resumen")
     suspend fun obtenerUsuarios(): List<Usuario>
 
 }

@@ -51,4 +51,6 @@ dependencies {
     // Opcional pero recomendado: Para ver los logs de lo que envías y recibes
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
 }
