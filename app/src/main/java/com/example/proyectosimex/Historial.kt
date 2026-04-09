@@ -38,11 +38,11 @@ class Historial : AppCompatActivity() {
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.accionDescargar -> {
-                        // lógica descargar
+
                         true
                     }
                     R.id.accionEliminar -> {
-                        // lógica eliminar
+
                         true
                     }
                     else -> false

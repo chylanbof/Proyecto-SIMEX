@@ -19,9 +19,9 @@
 
         <ImageView
             android:id="@+id/imgPedido"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_historial"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_order"
             android:scaleType="centerCrop"
             android:layout_marginEnd="12dp"/>
 
@@ -64,7 +64,9 @@
             android:layout_height="32dp"
             android:src="@drawable/ic_mas_opciones"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Opciones"/>
+            android:contentDescription="Opciones"
+            app:tint="#555555"
+            android:scaleType="centerInside"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
