@@ -30,6 +30,7 @@
         <activity android:name=".Notificaciones"/>
         <activity android:name=".Perfil"/>
         <activity android:name=".Historial"/>
+        <activity android:name=".NombrePedido"/>
     </application>
 
 </manifest>
