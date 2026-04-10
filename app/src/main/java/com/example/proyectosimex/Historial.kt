@@ -1,5 +1,6 @@
 package com.example.proyectosimex
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 
 class Historial : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +51,14 @@ class Historial : AppCompatActivity() {
                 }
             }
             popup.show()
+        }
+
+        findViewById<CardView>(R.id.pedidoPlaceholder).setOnClickListener {
+            val intent = Intent(this, NombrePedido::class.java).apply {
+                putExtra("numeroOferta", "EC002")
+                putExtra("nombrePedido", "Pedido EC002")
+            }
+            startActivity(intent)
         }
     }
 
