@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.Clases.Usuario
 import com.example.proyectosimex.R
 
-class UsuarioAdapter(private var listaUsuario: List<Usuario>):
+class UsuarioAdapter( var listaUsuario: List<Usuario>,
+                     private val onItemClick: (Usuario) -> Unit):
     RecyclerView.Adapter<UsuarioAdapter.UsuarioViewHolder>(){
 
     class UsuarioViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -28,7 +29,12 @@ class UsuarioAdapter(private var listaUsuario: List<Usuario>):
         holder.tvNombre.text = "${usuario.nom ?: ""} ${usuario.cognoms ?: ""}"
 
         // Mostramos empresa y el texto del rol
-        holder.tvRol.text = "Empresa: ${usuario.empresa ?: "N/A"} - Rol: ${usuario.rol ?: "Sin Rol"}"
+        holder.tvRol.text = "Empresa: ${usuario.empresa ?: "N/A"} - ${usuario.rol ?: "Sin Rol"}"
+
+        //detecta que se ha seleccionado un cliente
+        holder.itemView.setOnClickListener {
+            onItemClick(usuario)
+        }
     }
 
     override fun getItemCount(): Int = listaUsuario.size

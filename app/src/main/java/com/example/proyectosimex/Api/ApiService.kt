@@ -9,4 +9,8 @@ interface ApiService {
     @GET("api/Usuaris/resumen")
     suspend fun obtenerUsuarios(): List<Usuario>
 
+    // Solo clientes
+    @GET("api/Usuaris/rol/3")
+    suspend fun obtenerUsuariosRol3(): List<Usuario>
+
 }
