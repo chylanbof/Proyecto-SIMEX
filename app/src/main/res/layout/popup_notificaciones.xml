@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notificacionesContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_button_popups">
+
+    <TextView
+            android:id="@+id/lblNotificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nueva oferta"
+            android:padding="8dp"
+            android:textColor="#FFFFFF"
+            />
+
+    <TextView
+        android:id="@+id/lblOfertas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ofertas"
+        android:textColor="#FFFFFF"
+        android:padding="8dp"/>
+
+
+</LinearLayout>
