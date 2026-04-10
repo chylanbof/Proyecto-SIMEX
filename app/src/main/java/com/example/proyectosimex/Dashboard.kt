@@ -40,10 +40,17 @@ class Dashboard : AppCompatActivity() {
             startActivity(intent)
         }
 
+        findViewById<CardView>(R.id.cardResumen).setOnClickListener {
+            val intent = Intent(this, Resumen::class.java)
+            startActivity(intent)
+        }
+
         findViewById<CardView>(R.id.cardHistorial).setOnClickListener {
             val intent = Intent(this, Historial::class.java)
             startActivity(intent)
         }
+
+
 
     }
 

@@ -31,6 +31,8 @@
         <activity android:name=".Perfil"/>
         <activity android:name=".Historial"/>
         <activity android:name=".NombrePedido"/>
+        <activity android:name=".Resumen"/>
+        <activity android:name=".Tracking"/>
     </application>
 
 </manifest>
