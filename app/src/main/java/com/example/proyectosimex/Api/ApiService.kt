@@ -13,4 +13,8 @@ interface ApiService {
     @GET("api/Usuaris/rol/3")
     suspend fun obtenerUsuariosRol3(): List<Usuario>
 
+    // Si quisieras buscar un usuario específico por ID
+    @GET("usuarios/{id}")
+    suspend fun obtenerUsuarioPorId(@Path("id") id: Int): Usuario
+
 }

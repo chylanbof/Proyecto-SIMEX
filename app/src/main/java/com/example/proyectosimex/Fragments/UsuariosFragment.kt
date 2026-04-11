@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.Adapters.UsuarioAdapter
+import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.R
 import com.example.proyectosimex.RetrofitClient
 import kotlinx.coroutines.launch
@@ -19,6 +20,8 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (activity as? AgenteComercial)?.actualizarTitulosHeader("Agente Comercial")
 
         // Configuracion de recycle view con el id rvUsuarios del xml
         val rv = view.findViewById<RecyclerView>(R.id.rvUsuarios)
@@ -43,7 +46,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
     private fun obtenerDatos(){
         viewLifecycleOwner.lifecycleScope.launch {
-            try {
+            /*try {
                 val listaUsuarios = RetrofitClient.instancia.obtenerUsuariosRol3()
 
                 if (listaUsuarios.isNotEmpty()){
@@ -53,7 +56,17 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
                 }
             } catch (e: Exception){
                 Log.e("API_ERROR", "Mensaje: ${e.message}")
-            }
+            }*/
+
+            // solo puesta para hacer pruebas borrar despues
+            // FORZAMOS una lista de prueba manual
+            val listaFake = listOf(
+                Usuario(id = 1, nom = "Cliente de Prueba", empresa = "Empresa Test", rol = "Cliente"),
+                Usuario(id = 2, nom = "Juan Pérez", empresa = "Logística S.A.", rol = "Cliente")
+            )
+
+            // Se la pasamos al adapter directamente
+            adapter.updateData(listaFake)
         }
     }
 
