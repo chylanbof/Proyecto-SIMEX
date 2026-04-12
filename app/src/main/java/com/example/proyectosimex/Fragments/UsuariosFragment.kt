@@ -15,6 +15,8 @@ import com.example.proyectosimex.RetrofitClient
 import kotlinx.coroutines.launch
 import com.example.proyectosimex.Clases.Usuario
 
+// ligado al agente comercial, carga los usuarios de la API y el agente comercial podra
+// elegir si quiere crear una nueva oferta para ese usuario o administrar una oferta ya creada
 class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     private lateinit var adapter: UsuarioAdapter
 
@@ -70,7 +72,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
         }
     }
 
-    // Función para crear el PopUp
+    // Función para crear el PopUp y elegir a que fragmento va a ir
     private fun mostrarPopUp(view: View, usuario: Usuario) {
         val popup = android.widget.PopupMenu(requireContext(), view)
         popup.menu.add("Crear oferta para ${usuario.nom}")
@@ -94,6 +96,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
         popup.show()
     }
 
+    //Abre el fragmen de ofertas del usuario
     private fun abrirFragmentOfertas(usuario: Usuario) {
         val fragmentOfertas = CrearOfertasFragment()
 
@@ -109,7 +112,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
             .commit()
 
     }
-
+    // abre el fragmen donde se administra el usuario
     private fun abrirAdministrarOfertas(usuario: Usuario){
         val fragmemtAdministrarOfertas = AdministrarOfertasFragment()
 

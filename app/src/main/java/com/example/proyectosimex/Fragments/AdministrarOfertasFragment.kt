@@ -11,6 +11,10 @@ import com.example.proyectosimex.Adapters.OfertaAdapter
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.Clases.Oferta
 
+//Apartado de agente comercial, cuando seleccione a un usuarios mostrara las ofertas
+// que tiene ese usuarios, aqui el agente comercial podra darle click y nos enviara a
+// detalleOfertaFragment, donde el agente comercial podra cambiar el estado de los pasos
+//
 class AdministrarOfertasFragment : Fragment(R.layout.fragment_administrar_ofertas){
 
     private lateinit var adapter: OfertaAdapter

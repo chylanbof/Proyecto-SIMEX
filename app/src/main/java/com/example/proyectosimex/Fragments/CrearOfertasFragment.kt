@@ -13,7 +13,7 @@ import com.example.proyectosimex.AgenteComercial
 
 
 // Fragment que se encarga de cargar los datos para crear nueva oferta
-//va ligada a la tabla ofertas.
+//va ligada a la tabla ofertas, Apartado del agente comercial.
 class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

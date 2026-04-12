@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.R
 
+// Muestra la oferta del cliente y el agente comercial puede administrarla,
+// en ese fragment cambiaremos el estado de los pasos segun el incoterm que tenga la oferta
+// y luego lo guardaremos en la base de datos.
 class DetalleOfertaFragment : Fragment(R.layout.fragment_detalle_oferta) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,9 +38,14 @@ class DetalleOfertaFragment : Fragment(R.layout.fragment_detalle_oferta) {
         val contenedorHitos = view.findViewById<LinearLayout>(R.id.contenedorHitos)
         generarHitosDinamicos(contenedorHitos, incotermSimulado)
 
-        // 5. Botón Guardar
+        // Botón Guardar
         view.findViewById<Button>(R.id.btnGuardarCambios).setOnClickListener {
             Toast.makeText(requireContext(), "Seguimiento guardado para $incotermSimulado", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.popBackStack()
+        }
+
+        //Boton Cancelar
+        view.findViewById<Button>(R.id.btnCancelarDetalle).setOnClickListener {
             parentFragmentManager.popBackStack()
         }
     }
