@@ -2,7 +2,7 @@ package com.example.proyectosimex
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyectosimex.Fragments.UsuariosFragment
+import com.example.proyectosimex.fragments.UsuariosFragment
 
 class AgenteComercial : AppCompatActivity() {
 

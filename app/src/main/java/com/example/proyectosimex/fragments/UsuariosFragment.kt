@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Fragments
+package com.example.proyectosimex.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Adapters.UsuarioAdapter
+import com.example.proyectosimex.adapters.UsuarioAdapter
 import com.example.proyectosimex.R
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
 
 class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
@@ -34,7 +34,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     private fun obtenerDatos(){
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val listaUsuarios = RetrofitClient.instancia.obtenerUsuarios()
+                val listaUsuarios = RetrofitClient.api.obtenerUsuarios()
 
                 if (listaUsuarios.isNotEmpty()){
                     adapter.updateData(listaUsuarios)

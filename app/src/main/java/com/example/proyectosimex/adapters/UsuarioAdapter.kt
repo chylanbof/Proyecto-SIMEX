@@ -1,10 +1,10 @@
-package com.example.proyectosimex.Adapters
+package com.example.proyectosimex.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Clases.Usuario
+import com.example.proyectosimex.clases.Usuario
 import com.example.proyectosimex.R
 
 class UsuarioAdapter(private var listaUsuario: List<Usuario>):
