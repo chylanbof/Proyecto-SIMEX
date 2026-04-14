@@ -26,7 +26,7 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
         val rv = view.findViewById<RecyclerView>(R.id.rvOfertasUsuarios)
         rv.layoutManager = LinearLayoutManager(requireContext())
 
-        // Datos de prueba (Fake)
+        /*// Datos de prueba (Fake)
         val listaPrueba = listOf(
             Oferta(1, "Barcelona", "Shanghai", 35.0),
             Oferta(2, "Madrid", "New York", 35.2)
@@ -35,10 +35,10 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
         adapter = OfertaUsuariosAdapter(listaPrueba) { oferta ->
             abrirDetalleOferta(oferta)
         }
-        rv.adapter = adapter
+        rv.adapter = adapter*/
     }
 
-    private fun abrirDetalleOferta(oferta: Oferta){
+    /*private fun abrirDetalleOferta(oferta: Oferta){
         val fragmentDetalle = OfertaDetalladaUsuarioFragment()
 
         // Pasamos el ID de la oferta mediante un Bundle
@@ -56,5 +56,5 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
             .addToBackStack(null) // Para que el cliente pueda volver a la lista con el botón "Atrás"
             .commit()
 
-    }
+    }*/
 }

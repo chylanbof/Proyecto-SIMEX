@@ -48,7 +48,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
     private fun obtenerDatos(){
         viewLifecycleOwner.lifecycleScope.launch {
-            /*try {
+           try {
                 val listaUsuarios = RetrofitClient.instancia.obtenerUsuariosRol3()
 
                 if (listaUsuarios.isNotEmpty()){
@@ -58,9 +58,9 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
                 }
             } catch (e: Exception){
                 Log.e("API_ERROR", "Mensaje: ${e.message}")
-            }*/
+            }
 
-            // solo puesta para hacer pruebas borrar despues
+            /*// solo puesta para hacer pruebas borrar despues
             // FORZAMOS una lista de prueba manual
             val listaFake = listOf(
                 Usuario(id = 1, nom = "Cliente de Prueba", empresa = "Empresa Test", rol = "Cliente"),
@@ -68,7 +68,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
             )
 
             // Se la pasamos al adapter directamente
-            adapter.updateData(listaFake)
+            adapter.updateData(listaFake)*/
         }
     }
 
@@ -98,12 +98,14 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
     //Abre el fragmen de ofertas del usuario
     private fun abrirFragmentOfertas(usuario: Usuario) {
+
+        Log.d("DEBUG_SIMEX", "Click en usuario: ${usuario.nom} con ID original: ${usuario.id}")
         val fragmentOfertas = CrearOfertasFragment()
 
         // PASAR DATOS
         val bundle = Bundle()
         bundle.putString("nombreUsuario", usuario.nom)
-        bundle.putInt("idUsuario", usuario.id ?: 0)
+        bundle.putInt("clientId", usuario.id ?: 0)
         fragmentOfertas.arguments = bundle
 
         parentFragmentManager.beginTransaction()

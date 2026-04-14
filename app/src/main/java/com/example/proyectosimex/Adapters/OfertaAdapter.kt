@@ -26,8 +26,8 @@ RecyclerView.Adapter<OfertaAdapter.OfertaViewHolder>(){
     override fun onBindViewHolder(holder: OfertaViewHolder, position: Int) {
         val oferta = listaOfertas[position]
         holder.tvId.text = "Oferta #${oferta.id}"
-        holder.tvOrigen.text = "Origen: ${oferta.origen ?: "No definido"}"
-        holder.tvDestino.text = "Destino: ${oferta.destino ?: "No definido"}"
+        holder.tvOrigen.text = "Origen: ${oferta.portOrigenId ?: "No definido"}"
+        holder.tvDestino.text = "Destino: ${oferta.portDestiId ?: "No definido"}"
         holder.itemView.setOnClickListener { onOfertaClick(oferta) }
     }
 

@@ -27,7 +27,7 @@ class OfertaUsuariosAdapter(private var lista: List<Oferta>, private val clickLi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val oferta = lista[position]
         holder.id.text = "Oferta #${oferta.id}"
-        holder.ruta.text = "${oferta.origen} -> ${oferta.destino}"
+        holder.ruta.text = "${oferta.portOrigenId} -> ${oferta.portDestiId}"
         holder.incoterm.text = "Incoterm: No asignado"
 
         holder.itemView.setOnClickListener { clickListener(oferta) }

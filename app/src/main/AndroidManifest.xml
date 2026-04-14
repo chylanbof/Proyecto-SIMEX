@@ -17,7 +17,7 @@
         android:theme="@style/Theme.ProyectoSIMEX"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".OfertasUsuarios"
+            android:name=".AgenteComercial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

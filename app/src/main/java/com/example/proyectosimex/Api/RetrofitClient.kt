@@ -1,5 +1,5 @@
 package com.example.proyectosimex
-import com.example.proyectosimex.Api.ApiService
+import ApiService
 
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit

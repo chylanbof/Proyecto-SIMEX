@@ -28,7 +28,7 @@ class AdministrarOfertasFragment : Fragment(R.layout.fragment_administrar_oferta
         val rv = view.findViewById<RecyclerView>(R.id.rvOfertasAdministrar)
         rv.layoutManager = LinearLayoutManager(requireContext())
 
-        //solo datos de prueba para poder ver el front como quedara
+       /* //solo datos de prueba para poder ver el front como quedara
         val listaFake = listOf(
             Oferta(101,"Barcelona, ES", "Marseille,FR"),
             Oferta(102,"Valencia, ES", "Genova,IT"),
@@ -47,7 +47,7 @@ class AdministrarOfertasFragment : Fragment(R.layout.fragment_administrar_oferta
                 .commit()
 
         }
-        rv.adapter = adapter
+        rv.adapter = adapter*/
 
     }
 }
