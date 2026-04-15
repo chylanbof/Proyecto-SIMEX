@@ -24,7 +24,9 @@ import java.util.Calendar
 import java.util.Locale
 
 // Fragment que se encarga de cargar los datos para crear nueva oferta
-//va ligada a la tabla ofertas, Apartado del agente comercial.
+//va ligada a la tabla ofertas, Apartado del agente comercial
+
+
 // Finalizado
 class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -136,14 +138,14 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     }
 
     private fun recolectarDatosDeInterfaz(v: View, clientId: Int): Oferta {
-        // 1. Formateo de Fechas
+        // Formateo de Fechas
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val hoy = sdf.format(Calendar.getInstance().time)
         val cal = Calendar.getInstance()
         cal.add(Calendar.MONTH, 1)
         val mesQueVe = sdf.format(cal.time)
 
-        // 2. Capturar Selecciones de los Spinners
+        // Capturar Selecciones de los Spinners
         val transporteSel = v.findViewById<Spinner>(R.id.spinnerTransporte).selectedItem as? ItemCatalogo
         val incotermSel = v.findViewById<Spinner>(R.id.spinnerIncoterm).selectedItem as? ItemCatalogo
         val transportistaSel = v.findViewById<Spinner>(R.id.spinnerTransportista).selectedItem as? ItemCatalogo
@@ -152,7 +154,7 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
         val origenSel = v.findViewById<Spinner>(R.id.spinnerOrigen).selectedItem as? ItemCatalogo
         val destiSel = v.findViewById<Spinner>(R.id.spinnerDesti).selectedItem as? ItemCatalogo
 
-        // 3. Lógica de Puertos vs Aeropuertos (según el transporte seleccionado)
+        // Lógica de Puertos vs Aeropuertos (según el transporte seleccionado)
         val nombreTrans = transporteSel?.nom ?: ""
         var pOrigen: Int? = null
         var pDesti: Int? = null
@@ -167,7 +169,7 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
             pDesti = destiSel?.id
         }
 
-        // 4. Retornar el objeto con los datos reales de la UI
+        // Retornar el objeto con los datos reales de la UI
         return Oferta(
             id = 0,
             tipusTransportId = transporteSel?.id ?: 1,

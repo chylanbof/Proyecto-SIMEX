@@ -7,7 +7,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvOfertasAdministrar"
+        android:id="@+id/rvOfertasUsuarios"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingTop="15dp"
@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_ofertas" />
+        tools:listitem="@layout/item_ofertas_usuarios" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

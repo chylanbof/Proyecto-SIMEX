@@ -39,9 +39,12 @@ interface ApiService {
     suspend fun crearOferta(@Body oferta: Oferta): Response<Oferta>
 
     @GET("api/Ofertes/Cliente/{id}")
-    suspend fun getOfertasCliente(@Path("id") id: Int): List<Oferta>
+    suspend fun getOfertasByCliente(@Path("id") id: Int): Response<List<Oferta>>
 
     @PUT("api/Ofertes/{id}")
-    suspend fun actualizarOferta(@Path("id") id: Int, @Body oferta: Oferta)
+    suspend fun actualizarOferta(@Path("id") id: Int, @Body oferta: Oferta): Response<Unit>
+
+    @GET("api/Ofertes/{id}")
+    suspend fun getOfertasById(@Path("id")id: Int): Response<Oferta>
 
 }

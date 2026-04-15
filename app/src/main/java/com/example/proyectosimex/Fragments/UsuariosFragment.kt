@@ -17,6 +17,8 @@ import com.example.proyectosimex.Clases.Usuario
 
 // ligado al agente comercial, carga los usuarios de la API y el agente comercial podra
 // elegir si quiere crear una nueva oferta para ese usuario o administrar una oferta ya creada
+
+
 // Finalizado.
 class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     private lateinit var adapter: UsuarioAdapter
@@ -117,10 +119,14 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     }
     // abre el fragmen donde se administra el usuario
     private fun abrirAdministrarOfertas(usuario: Usuario){
-        val fragmemtAdministrarOfertas = AdministrarOfertasFragment()
+        val fragmentAdministrar = AdministrarOfertasFragment()
+        val bundle = Bundle()
+        bundle.putInt("clientId", usuario.id ?: 0) // Pasamos el ID del usuario seleccionado
+        bundle.putString("nombreUsuario", usuario.nom)
+        fragmentAdministrar.arguments = bundle
 
         parentFragmentManager.beginTransaction()
-            .replace(R.id.FragmentContainer, fragmemtAdministrarOfertas)
+            .replace(R.id.FragmentContainer, fragmentAdministrar)
             .addToBackStack(null)
             .commit()
     }

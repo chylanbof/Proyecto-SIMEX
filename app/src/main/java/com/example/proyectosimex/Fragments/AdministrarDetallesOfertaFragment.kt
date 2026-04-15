@@ -5,11 +5,9 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.proyectosimex.AgenteComercial
@@ -18,7 +16,11 @@ import com.example.proyectosimex.R
 // Muestra la oferta del cliente y el agente comercial puede administrarla,
 // en ese fragment cambiaremos el estado de los pasos segun el incoterm que tenga la oferta
 // y luego lo guardaremos en la base de datos.
-class DetalleOfertaFragment : Fragment(R.layout.fragment_detalle_oferta) {
+
+// siguiente a trabajar!!!!
+// en Desarrollo !!!!
+
+class AdministrarDetallesOfertaFragment : Fragment(R.layout.fragment_ofertas_administrar_cambiar_estados) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,7 +32,7 @@ class DetalleOfertaFragment : Fragment(R.layout.fragment_detalle_oferta) {
         val idOferta = arguments?.getInt("idOferta") ?: 0
         val incotermSimulado = "EXW" // Esto vendrá de la API o del bundle más adelante
 
-        // Pintar datos en la Card (Simulados de momento)
+        /* // Pintar datos en la Card (Simulados de momento)
         view.findViewById<TextView>(R.id.tvNumeroOferta).text = "Oferta #$idOferta"
         view.findViewById<TextView>(R.id.tvIncoterms).text = "Incoterm: $incotermSimulado"
 
@@ -42,12 +44,12 @@ class DetalleOfertaFragment : Fragment(R.layout.fragment_detalle_oferta) {
         view.findViewById<Button>(R.id.btnGuardarCambios).setOnClickListener {
             Toast.makeText(requireContext(), "Seguimiento guardado para $incotermSimulado", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
-        }
+        }*/
 
-        //Boton Cancelar
+       /* //Boton Cancelar
         view.findViewById<Button>(R.id.btnCancelarDetalle).setOnClickListener {
             parentFragmentManager.popBackStack()
-        }
+        }*/
     }
 
     private fun generarHitosDinamicos(contenedor: LinearLayout, incoterm: String) {
