@@ -13,6 +13,7 @@ import com.example.proyectosimex.R
 
 // Fragment donde se muestran las ofertas que han sido creadas por el agente comercial
 // y tiene que aceptar o no el usuario
+// Proximo en trabajar
 class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
 
     private lateinit var adapter: OfertaUsuariosAdapter
@@ -26,28 +27,25 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
         val rv = view.findViewById<RecyclerView>(R.id.rvOfertasUsuarios)
         rv.layoutManager = LinearLayoutManager(requireContext())
 
-        /*// Datos de prueba (Fake)
-        val listaPrueba = listOf(
+        // Datos de prueba (Fake)
+        /*val listaPrueba = listOf(
             Oferta(1, "Barcelona", "Shanghai", 35.0),
-            Oferta(2, "Madrid", "New York", 35.2)
-        )
+            Oferta(2, "Madrid", "New York", 35.2, )
+        )*/
 
-        adapter = OfertaUsuariosAdapter(listaPrueba) { oferta ->
+        /*adapter = OfertaUsuariosAdapter(listaPrueba) { oferta ->
             abrirDetalleOferta(oferta)
         }
         rv.adapter = adapter*/
     }
 
-    /*private fun abrirDetalleOferta(oferta: Oferta){
+    private fun abrirDetalleOferta(oferta: Oferta){
         val fragmentDetalle = OfertaDetalladaUsuarioFragment()
 
         // Pasamos el ID de la oferta mediante un Bundle
         val bundle = Bundle()
         bundle.putInt("idOferta", oferta.id)
         // Podrías pasar más datos si no quieres volver a llamar a la API
-        bundle.putString("origen", oferta.origen)
-        bundle.putString("destino", oferta.destino)
-
         fragmentDetalle.arguments = bundle
 
         // Realizamos la transacción al fragmento de detalle
@@ -56,5 +54,5 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
             .addToBackStack(null) // Para que el cliente pueda volver a la lista con el botón "Atrás"
             .commit()
 
-    }*/
+    }
 }

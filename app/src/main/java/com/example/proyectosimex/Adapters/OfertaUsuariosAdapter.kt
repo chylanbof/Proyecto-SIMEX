@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.Clases.Oferta
 import com.example.proyectosimex.R
 
-// Adpatar que se encarga de ver las ofertas creadas por el Agente comercial par aque
+// Adpatar que se encarga de inflar las ofertas creadas por el Agente comercial para que
 // el usuario las acepte o las rechace
+// comenzar este
 class OfertaUsuariosAdapter(private var lista: List<Oferta>, private val clickListener: (Oferta) -> Unit) :
     RecyclerView.Adapter<OfertaUsuariosAdapter.ViewHolder>() {
 
@@ -20,7 +21,8 @@ class OfertaUsuariosAdapter(private var lista: List<Oferta>, private val clickLi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ofertas_usuarios, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_ofertas_usuarios, parent, false)
         return ViewHolder(view)
     }
 

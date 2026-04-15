@@ -17,6 +17,7 @@ import com.example.proyectosimex.Clases.Usuario
 
 // ligado al agente comercial, carga los usuarios de la API y el agente comercial podra
 // elegir si quiere crear una nueva oferta para ese usuario o administrar una oferta ya creada
+// Finalizado.
 class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     private lateinit var adapter: UsuarioAdapter
 
