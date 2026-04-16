@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.Adapters.OfertaUsuariosAdapter
 import com.example.proyectosimex.AgenteComercial
-import com.example.proyectosimex.Clases.Oferta
+import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.OfertasUsuarios
 import com.example.proyectosimex.R
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
 import okhttp3.Response
 import kotlin.collections.emptyList
@@ -60,13 +60,13 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
         lifecycleScope.launch {
             try {
                 // Cargamos datos
-                val incos = RetrofitClient.instancia.getIncoterms().associate { it.id to it.nom!! }
-                val puertos = RetrofitClient.instancia.getPorts().associate { it.id to it.nom!! }
-                val aeros = RetrofitClient.instancia.getAeroports().associate { it.id to it.nom!! }
+                val incos = RetrofitClient.api.getIncoterms().associate { it.id to it.nom!! }
+                val puertos = RetrofitClient.api.getPorts().associate { it.id to it.nom!! }
+                val aeros = RetrofitClient.api.getAeroports().associate { it.id to it.nom!! }
 
 
                 // cargamos las ofertas
-                val response = RetrofitClient.instancia.getOfertasByCliente(clientId)
+                val response = RetrofitClient.api.getOfertasByCliente(clientId)
 
                 if (response.isSuccessful) {
                     val todasLasOfertas = response.body() ?: emptyList()

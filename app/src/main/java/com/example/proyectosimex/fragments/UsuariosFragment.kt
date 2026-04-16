@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Adapters.UsuarioAdapter
+import com.example.proyectosimex.adapters.UsuarioAdapter
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.R
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
-import com.example.proyectosimex.Clases.Usuario
+import com.example.proyectosimex.clases.Usuario
 
 // ligado al agente comercial, carga los usuarios de la API y el agente comercial podra
 // elegir si quiere crear una nueva oferta para ese usuario o administrar una oferta ya creada
@@ -52,7 +52,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
     private fun obtenerDatos(){
         viewLifecycleOwner.lifecycleScope.launch {
            try {
-                val listaUsuarios = RetrofitClient.instancia.obtenerUsuariosRol3()
+                val listaUsuarios = RetrofitClient.api.obtenerUsuariosRol3()
 
                 if (listaUsuarios.isNotEmpty()){
                     adapter.updateData(listaUsuarios)

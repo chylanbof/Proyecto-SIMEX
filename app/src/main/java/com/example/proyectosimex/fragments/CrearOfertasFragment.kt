@@ -15,9 +15,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.proyectosimex.AgenteComercial
-import com.example.proyectosimex.Clases.ItemCatalogo
-import com.example.proyectosimex.Clases.Oferta
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.clases.ItemCatalogo
+import com.example.proyectosimex.clases.Oferta
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -78,11 +78,11 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
         lifecycleScope.launch {
             try {
                 // 1. Carga de catálogos independientes
-                val incoterms = RetrofitClient.instancia.getIncoterms()
-                val transportes = RetrofitClient.instancia.getTipusTransports()
-                val transportistas = RetrofitClient.instancia.getTransportistas()
-                val contenedores = RetrofitClient.instancia.getTipusContenidors()
-                val estadoOferta = RetrofitClient.instancia.getTipusValidacions()
+                val incoterms = RetrofitClient.api.getIncoterms()
+                val transportes = RetrofitClient.api.getTipusTransports()
+                val transportistas = RetrofitClient.api.getTransportistas()
+                val contenedores = RetrofitClient.api.getTipusContenidors()
+                val estadoOferta = RetrofitClient.api.getTipusValidacions()
 
                 // 2. Asignar Adapters
                 spInco.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, incoterms)
@@ -100,9 +100,9 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
                             try {
                                 val nombreTrans = seleccionado.nom ?: ""
                                 val listaRuta = if (nombreTrans.contains("Aéreo", ignoreCase = true)) {
-                                    RetrofitClient.instancia.getAeroports()
+                                    RetrofitClient.api.getAeroports()
                                 } else {
-                                    RetrofitClient.instancia.getPorts()
+                                    RetrofitClient.api.getPorts()
                                 }
 
                                 val routeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listaRuta)
@@ -217,7 +217,7 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     private fun enviarOferta(oferta: Oferta){
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.instancia.crearOferta(oferta)
+                val response = RetrofitClient.api.crearOferta(oferta)
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "Oferta guardada correctamente", Toast.LENGTH_SHORT).show()
                     // Volvemos a la pantalla anterior (lista de ofertas)

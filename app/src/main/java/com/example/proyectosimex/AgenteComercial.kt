@@ -3,7 +3,8 @@ package com.example.proyectosimex
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyectosimex.fragments.UsuariosFragment
+import com.example.proyectosimex.Fragments.UsuariosFragment
+
 
 // activity que controla los fragment de UsuarioFragment, DetalleOfertaFragment,
 // CrearOfertasFragment, AdministrarOfertasFragment

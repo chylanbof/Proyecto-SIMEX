@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Clases.Oferta
+import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.R
 
 // Adpatar que se encarga de inflar las ofertas creadas por el Agente comercial para que

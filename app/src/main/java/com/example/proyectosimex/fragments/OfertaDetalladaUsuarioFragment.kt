@@ -11,9 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.proyectosimex.Clases.Oferta
+import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.R
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
 
 // Fragment para el control de las ofertas que aceptara o rechazara el usuario
@@ -39,14 +39,14 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
         lifecycleScope.launch {
             try {
                 // Llamadas en paralelo para los catálogos
-                val incos = RetrofitClient.instancia.getIncoterms().associate { it.id to it.nom }
-                val puertos = RetrofitClient.instancia.getPorts().associate { it.id to it.nom }
-                val aeros = RetrofitClient.instancia.getAeroports().associate { it.id to it.nom }
-                val transportistas = RetrofitClient.instancia.getTransportistas().associate { it.id to it.nom }
-                val contenedores = RetrofitClient.instancia.getTipusContenidors().associate { it.id to it.nom }
+                val incos = RetrofitClient.api.getIncoterms().associate { it.id to it.nom }
+                val puertos = RetrofitClient.api.getPorts().associate { it.id to it.nom }
+                val aeros = RetrofitClient.api.getAeroports().associate { it.id to it.nom }
+                val transportistas = RetrofitClient.api.getTransportistas().associate { it.id to it.nom }
+                val contenedores = RetrofitClient.api.getTipusContenidors().associate { it.id to it.nom }
 
                 // Llamada a la oferta
-                val response = RetrofitClient.instancia.getOfertasById(idOferta)
+                val response = RetrofitClient.api.getOfertasById(idOferta)
 
                 if (response.isSuccessful) {
                     response.body()?.let { oferta ->
@@ -100,7 +100,7 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
         lifecycleScope.launch {
             try {
                 // Primero obtenemos la oferta actual para tener todos sus datos
-                val responseGet = RetrofitClient.instancia.getOfertasById(idOferta)
+                val responseGet = RetrofitClient.api.getOfertasById(idOferta)
 
                 if (responseGet.isSuccessful) {
                     val ofertaActual = responseGet.body()
@@ -114,7 +114,7 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
                         )
 
                         // Enviamos la actualización a la API
-                        val responsePut = RetrofitClient.instancia.actualizarOferta(idOferta, ofertaActualizada)
+                        val responsePut = RetrofitClient.api.actualizarOferta(idOferta, ofertaActualizada)
 
                         if (responsePut.isSuccessful) {
                             val texto: String

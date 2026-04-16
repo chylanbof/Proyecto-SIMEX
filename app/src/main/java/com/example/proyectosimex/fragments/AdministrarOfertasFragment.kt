@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.Adapters.OfertaUsuariosAdapter
 import com.example.proyectosimex.AgenteComercial
-import com.example.proyectosimex.Clases.Oferta
-import com.example.proyectosimex.RetrofitClient
+import com.example.proyectosimex.clases.Oferta
+import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
 
 //Apartado de agente comercial, cuando seleccione a un usuarios mostrara las ofertas
@@ -54,12 +54,12 @@ class AdministrarOfertasFragment : Fragment(R.layout.fragment_ofertas_para_admin
         lifecycleScope.launch {
             try {
                 // Cargamos catálogos para traducir nombres
-                val incos = RetrofitClient.instancia.getIncoterms().associate { it.id to (it.nom ?: "N/A") }
-                val puertos = RetrofitClient.instancia.getPorts().associate { it.id to (it.nom ?: "Puerto") }
-                val aeros = RetrofitClient.instancia.getAeroports().associate { it.id to (it.nom ?: "Aero") }
+                val incos = RetrofitClient.api.getIncoterms().associate { it.id to (it.nom ?: "N/A") }
+                val puertos = RetrofitClient.api.getPorts().associate { it.id to (it.nom ?: "Puerto") }
+                val aeros = RetrofitClient.api.getAeroports().associate { it.id to (it.nom ?: "Aero") }
 
                 // Llamada a la API
-                val response = RetrofitClient.instancia.getOfertasByCliente(clientId)
+                val response = RetrofitClient.api.getOfertasByCliente(clientId)
 
                 if (response.isSuccessful) {
                     val lista = response.body() ?: emptyList()
