@@ -37,6 +37,8 @@
         <activity android:name=".NombrePedido"/>
         <activity android:name=".Resumen"/>
         <activity android:name=".Tracking"/>
+        <activity android:name=".AgenteComercial"/>
+        <activity android:name=".OfertasUsuarios"/>
 
     </application>
 

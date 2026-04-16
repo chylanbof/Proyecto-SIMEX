@@ -103,6 +103,11 @@ class Dashboard : AppCompatActivity() {
             val intent = Intent(this, Historial::class.java)
             startActivity(intent)
         }
+
+        findViewById<CardView>(R.id.cardOfertas).setOnClickListener {
+            val intent = Intent(this, OfertasUsuarios::class.java)
+            startActivity(intent)
+        }
     }
 
     fun mostrarMenu(anchor: View) {

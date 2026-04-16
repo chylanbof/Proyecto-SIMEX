@@ -43,7 +43,11 @@ class MainActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val user = response.body()
 
-                            val intent = Intent(this@MainActivity, Dashboard::class.java)
+                            val intent = when (user?.rolId) {
+                                4 -> Intent(this@MainActivity, AgenteComercial::class.java)  // rol 4 = agente
+                                else -> Intent(this@MainActivity, Dashboard::class.java)      // rol 3 = cliente
+                            }
+
                             intent.putExtra("usuario_nombre", user?.nom)
                             intent.putExtra("usuario_id", user?.id)
                             intent.putExtra("usuario_cognoms", user?.cognoms)
