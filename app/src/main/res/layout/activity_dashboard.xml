@@ -156,7 +156,7 @@
                         android:id="@+id/tvSubtituloResumen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="En reparto 1"
+                        android:text="En reparto 0"
                         android:textSize="14sp"/>
 
                 </LinearLayout>
@@ -209,7 +209,7 @@
                         android:id="@+id/tvSubtituloOfertas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2 Ofertas Disponibles"
+                        android:text="0 Ofertas Disponibles"
                         android:textSize="14sp"/>
 
                 </LinearLayout>
@@ -262,7 +262,7 @@
                         android:id="@+id/tvSubtituloHistorial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10 Pedidos Guardados"
+                        android:text="0 Pedidos Guardados"
                         android:textSize="14sp"/>
 
                 </LinearLayout>

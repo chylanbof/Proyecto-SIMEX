@@ -7,5 +7,7 @@ data class Usuario(
     @SerializedName("nom") val nom: String?,
     @SerializedName("cognoms") val cognoms: String?,
     @SerializedName("empresa") val empresa: String?,
-    @SerializedName("rol") val rol: String?
-                  )
+    @SerializedName("rol") val rol: String?,
+    @SerializedName("telefon") val telefon: String?,
+    @SerializedName("dniFoto") val dniFoto: String?
+)

@@ -3,6 +3,7 @@ package com.example.proyectosimex
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -25,6 +26,9 @@ class Dashboard : AppCompatActivity() {
 
         val usuario = intent.getStringExtra("usuario_nombre") ?: ""
         val usuarioId = intent.getIntExtra("usuario_id", -1)
+        val usuarioCognoms = intent.getStringExtra("usuario_cognoms") ?: ""
+        val usuarioEmpresa = intent.getStringExtra("usuario_empresa") ?: ""
+        val usuarioTelefon = intent.getStringExtra("usuario_telefon") ?: ""
 
         val textViewBienvenido = findViewById<TextView>(R.id.txtHeaderTitle)
         textViewBienvenido.text = "Bienvenido, $usuario"
@@ -37,36 +41,39 @@ class Dashboard : AppCompatActivity() {
         if (usuarioId != -1) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    Log.d("ESTADOS", "Llamando API con usuarioId=$usuarioId")
                     val response = RetrofitClient.api.getContadors(usuarioId)
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             val contadors = response.body() ?: emptyList()
+                            contadors.forEach {
+                                Log.d("ESTADOS", "estat: '${it.estat}' | count: ${it.count}")
+                            }
 
-                            // Busca cada estado y actualiza su contador
-                            // Ajusta los nombres según lo que devuelve tu API
                             val enTransito = contadors.find {
-                                it.estat.contains("trànsit", ignoreCase = true) ||
-                                        it.estat.contains("transito", ignoreCase = true) ||
-                                        it.estat.contains("Enviada", ignoreCase = true)
+                                it.estat.contains("tránsito", ignoreCase = true) ||
+                                        it.estat.contains("trànsit", ignoreCase = true)
                             }?.count ?: 0
 
                             val enPreparacion = contadors.find {
-                                it.estat.contains("preparaci", ignoreCase = true) ||
-                                        it.estat.contains("Acceptada", ignoreCase = true)
+                                it.estat.contains("preparaci", ignoreCase = true)
                             }?.count ?: 0
 
                             val entregado = contadors.find {
-                                it.estat.contains("entregad", ignoreCase = true) ||
+                                it.estat.contains("entregado", ignoreCase = true) ||
                                         it.estat.contains("entregat", ignoreCase = true)
                             }?.count ?: 0
 
                             txtNumero1.text = enTransito.toString()
                             txtNumero2.text = enPreparacion.toString()
                             txtNumero3.text = entregado.toString()
+
+                        } else {
+                            Log.e("ESTADOS", "Error HTTP: ${response.code()}")
                         }
                     }
                 } catch (e: Exception) {
-                    // Si falla la conexión, los contadores se quedan en 0
+                    Log.e("ESTADOS", "Excepción: ${e.message}")
                 }
             }
         }
@@ -80,6 +87,10 @@ class Dashboard : AppCompatActivity() {
         btnPerfil.setOnClickListener {
             val intent = Intent(this, Perfil::class.java)
             intent.putExtra("usuario_nombre", usuario)
+            intent.putExtra("usuario_id", usuarioId)
+            intent.putExtra("usuario_cognoms", usuarioCognoms)
+            intent.putExtra("usuario_empresa", usuarioEmpresa)
+            intent.putExtra("usuario_telefon", usuarioTelefon)
             startActivity(intent)
         }
 

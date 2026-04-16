@@ -4,6 +4,9 @@
 
     <!-- Permiso para que la aplicacion se pueda conectar con la base de datos-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permiso para acceder a los archivos y descargar el dni-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
 
 
     <application
@@ -16,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoSIMEX"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -33,6 +37,9 @@
         <activity android:name=".NombrePedido"/>
         <activity android:name=".Resumen"/>
         <activity android:name=".Tracking"/>
+
     </application>
+
+
 
 </manifest>

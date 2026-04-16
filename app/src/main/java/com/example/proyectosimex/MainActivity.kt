@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, Dashboard::class.java)
                             intent.putExtra("usuario_nombre", user?.nom)
                             intent.putExtra("usuario_id", user?.id)
+                            intent.putExtra("usuario_cognoms", user?.cognoms)
+                            intent.putExtra("usuario_empresa", user?.empresa)
+                            intent.putExtra("usuario_telefon", user?.telefon)
                             startActivity(intent)
 
                         } else {
