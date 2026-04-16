@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Clases
+package com.example.proyectosimex.clases
 
 import com.google.gson.annotations.SerializedName
 
