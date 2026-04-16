@@ -38,6 +38,9 @@ interface ApiService {
     @GET("api/Usuaris/dni/{id}")
     suspend fun getDni(@Path("id") id: Int): Response<DniResponse>
 
+    //
+    //Anthony Api -- Unificar Ofertas.
+    //
     @GET("api/Usuaris/rol/3")
     suspend fun obtenerUsuariosRol3(): List<Usuario>
 
