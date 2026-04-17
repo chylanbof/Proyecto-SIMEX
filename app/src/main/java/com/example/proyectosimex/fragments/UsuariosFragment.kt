@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Fragments
+package com.example.proyectosimex.fragments
 
 import android.os.Bundle
 import android.util.Log

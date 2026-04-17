@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Fragments
+package com.example.proyectosimex.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Adapters.OfertaUsuariosAdapter
+import com.example.proyectosimex.adapters.OfertaUsuariosAdapter
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.OfertasUsuarios

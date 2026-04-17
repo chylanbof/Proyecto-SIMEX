@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Fragments
+package com.example.proyectosimex.fragments
 
 import android.graphics.Color
 import android.graphics.Typeface
