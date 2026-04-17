@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Adapters
+package com.example.proyectosimex
 
 import android.view.LayoutInflater
 import android.view.View

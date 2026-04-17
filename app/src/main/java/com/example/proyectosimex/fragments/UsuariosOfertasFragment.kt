@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Adapters.OfertaUsuariosAdapter
+import com.example.proyectosimex.OfertaUsuariosAdapter
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.OfertasUsuarios

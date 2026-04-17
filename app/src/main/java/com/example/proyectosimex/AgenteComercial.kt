@@ -1,6 +1,8 @@
 package com.example.proyectosimex
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectosimex.Fragments.UsuariosFragment
@@ -27,6 +29,23 @@ class AgenteComercial : AppCompatActivity() {
         //buscamos el textView dentro del layout incluido
         val txtHeader = findViewById<TextView>(R.id.txtHeaderTitle)
         txtHeader?.text = nuevoTitulo
+    }
+
+    // Dentro de AgenteComercial.kt
+    fun configurarBotonAtras(visible: Boolean, accion: (() -> Unit)? = null) {
+        val btnAtras = findViewById<ImageButton>(R.id.btnVolverAtras)
+
+        // Lo mostramos u ocultamos según el fragmento
+        btnAtras.visibility = if (visible) View.VISIBLE else View.GONE
+
+        btnAtras.setOnClickListener {
+            if (accion != null) {
+                accion() // Ejecuta una acción personalizada si se la pasas
+            } else {
+                // Acción por defecto: volver atrás en la pila
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
     }
 
 

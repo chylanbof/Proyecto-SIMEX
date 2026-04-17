@@ -1,8 +1,10 @@
 package com.example.proyectosimex.Fragments
 
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +30,8 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
         (activity as? AgenteComercial)?.actualizarTitulosHeader("Agente Comercial")
 
+        (activity as? AgenteComercial)?.configurarBotonAtras(false)
+
         // Configuracion de recycle view con el id rvUsuarios del xml
         val rv = view.findViewById<RecyclerView>(R.id.rvUsuarios)
         rv.layoutManager = LinearLayoutManager(requireContext())
@@ -47,6 +51,7 @@ class UsuariosFragment : Fragment(R.layout.fragment_usuarios) {
 
         //Llamar a la api de .NET
         obtenerDatos()
+
     }
 
     private fun obtenerDatos(){

@@ -42,11 +42,11 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
                 val incos = RetrofitClient.api.getIncoterms().associate { it.id to it.nom }
                 val puertos = RetrofitClient.api.getPorts().associate { it.id to it.nom }
                 val aeros = RetrofitClient.api.getAeroports().associate { it.id to it.nom }
-                val transportistas = RetrofitClient.api.getTransportistas().associate { it.id to it.nom }
+                val transportistas = RetrofitClient.api.getTransportistes().associate { it.id to it.nom }
                 val contenedores = RetrofitClient.api.getTipusContenidors().associate { it.id to it.nom }
 
                 // Llamada a la oferta
-                val response = RetrofitClient.api.getOfertasById(idOferta)
+                val response = RetrofitClient.api.getOfertas(idOferta)
 
                 if (response.isSuccessful) {
                     response.body()?.let { oferta ->
@@ -100,7 +100,7 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
         lifecycleScope.launch {
             try {
                 // Primero obtenemos la oferta actual para tener todos sus datos
-                val responseGet = RetrofitClient.api.getOfertasById(idOferta)
+                val responseGet = RetrofitClient.api.getOfertas(idOferta)
 
                 if (responseGet.isSuccessful) {
                     val ofertaActual = responseGet.body()

@@ -1,5 +1,7 @@
 package com.example.proyectosimex.api
 
+import com.example.proyectosimex.PasoSeguimientoItem
+import com.example.proyectosimex.SeguimientoOfertaResponse
 import com.example.proyectosimex.clases.ContadorEstat
 import com.example.proyectosimex.clases.DniResponse
 import com.example.proyectosimex.clases.ItemCatalogo
@@ -57,7 +59,7 @@ interface ApiService {
     suspend fun getAeroports(): List<ItemCatalogo>
 
     @GET("api/transportistes")
-    suspend fun getTransportistas(): List<ItemCatalogo>
+    suspend fun getTransportistes(): List<ItemCatalogo>
 
     @GET("api/tipusvalidacions")
     suspend fun getTipusValidacions(): List<ItemCatalogo>
@@ -75,5 +77,13 @@ interface ApiService {
     suspend fun actualizarOferta(@Path("id") id: Int, @Body oferta: Oferta): Response<Unit>
 
     @GET("api/Ofertes/{id}")
-    suspend fun getOfertasById(@Path("id") id: Int): Response<Oferta>
+    suspend fun getOfertas(@Path("id") id: Int): Response<Oferta>
+
+    // Api que se conectan con las ofertas y sus joins
+    @GET("api/Ofertes/{id}/Seguimiento")
+    suspend fun getSeguimientoOferta(@Path("id")id: Int): Response<SeguimientoOfertaResponse>
+
+    @POST("api/Ofertes/{id}/GuardarSeguimiento")
+    suspend fun guardarSeguimiento(@Path("id")id: Int, @Body pasos: List<PasoSeguimientoItem>): Response<Unit>
+
 }

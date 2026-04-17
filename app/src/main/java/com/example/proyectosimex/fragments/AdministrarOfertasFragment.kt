@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.proyectosimex.Adapters.OfertaUsuariosAdapter
+import com.example.proyectosimex.OfertaUsuariosAdapter
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.api.RetrofitClient
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 // que tiene ese usuarios, aqui el agente comercial podra darle click y nos enviara a
 // detalleOfertaFragment, donde el agente comercial podra cambiar el estado de los pasos
 
-// En desarrollo !!!!!
+// Finalizado
 class AdministrarOfertasFragment : Fragment(R.layout.fragment_ofertas_para_administrar){
 
     private var clientId: Int = 0
@@ -27,12 +27,18 @@ class AdministrarOfertasFragment : Fragment(R.layout.fragment_ofertas_para_admin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? AgenteComercial)?.configurarBotonAtras(true) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.FragmentContainer, UsuariosFragment())
+                .commit()
+        }
+
         // Recuperar el ID del cliente enviado desde UsuariosFragment
         clientId = arguments?.getInt("clientId") ?: 0
         val nombreCli = arguments?.getString("nombreUsuario") ?: "Cliente"
 
         //Llamamos a la funcion para cambiar el nombre del header
-        (activity as? AgenteComercial)?.actualizarTitulosHeader("Administrar Ofertas")
+        (activity as? AgenteComercial)?.actualizarTitulosHeader("Ofertas $nombreCli")
 
         //Configuramos el recycleView
         val rv = view.findViewById<RecyclerView>(R.id.rvOfertasUsuarios)

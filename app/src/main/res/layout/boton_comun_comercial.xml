@@ -27,14 +27,14 @@
 
 
     <ImageButton
-        android:id="@+id/btnNotificaciones"
+        android:id="@+id/btnVolverAtras"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:background="@drawable/rounded_button"
         app:backgroundTint="@null"
-        android:src="@drawable/ic_notificaciones"
+        android:src="@drawable/ic_atras"
         android:scaleType="fitCenter"
         android:padding="12dp"
         android:contentDescription="Ver notificaciones"

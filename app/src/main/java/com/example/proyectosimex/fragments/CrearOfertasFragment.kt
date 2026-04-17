@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.proyectosimex.AgenteComercial
@@ -32,7 +31,11 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        (activity as? AgenteComercial)?.configurarBotonAtras(true) {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.FragmentContainer, UsuariosFragment())
+                .commit()
+        }
 
         val nombre = arguments?.getString("nombreUsuario") ?: ""
         val clientId = arguments?.getInt("clientId") ?: 0
@@ -80,7 +83,7 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
                 // 1. Carga de catálogos independientes
                 val incoterms = RetrofitClient.api.getIncoterms()
                 val transportes = RetrofitClient.api.getTipusTransports()
-                val transportistas = RetrofitClient.api.getTransportistas()
+                val transportistas = RetrofitClient.api.getTransportistes()
                 val contenedores = RetrofitClient.api.getTipusContenidors()
                 val estadoOferta = RetrofitClient.api.getTipusValidacions()
 
