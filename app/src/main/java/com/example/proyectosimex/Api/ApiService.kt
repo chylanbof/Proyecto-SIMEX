@@ -17,6 +17,7 @@ import retrofit2.http.Path
 
 interface ApiService {
 
+    //Apis de Dylan
     @POST("api/Usuaris/login")
     suspend fun login(@Body request: LoginRequest): Response<Usuario>
 
@@ -38,6 +39,7 @@ interface ApiService {
     @GET("api/Usuaris/dni/{id}")
     suspend fun getDni(@Path("id") id: Int): Response<DniResponse>
 
+    //Apis de Anthony
     @GET("api/Usuaris/rol/3")
     suspend fun obtenerUsuariosRol3(): List<Usuario>
 
