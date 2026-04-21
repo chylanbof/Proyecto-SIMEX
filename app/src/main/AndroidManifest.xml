@@ -20,6 +20,7 @@
         android:theme="@style/Theme.ProyectoSIMEX"
         android:usesCleartextTraffic="true">
 
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
