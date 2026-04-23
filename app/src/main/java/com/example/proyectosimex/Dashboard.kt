@@ -139,6 +139,11 @@ class Dashboard : AppCompatActivity() {
             intent.putExtra("usuario_id", usuarioId)
             startActivity(intent)
         }
+
+        findViewById<AppCompatButton>(R.id.miniJuego).setOnClickListener {
+            val intent = Intent(this, AndroidLauncher::class.java)
+            startActivity(intent)
+        }
     }
 
     fun mostrarMenu(anchor: View) {

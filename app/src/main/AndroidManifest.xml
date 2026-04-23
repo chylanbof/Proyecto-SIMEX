@@ -40,6 +40,12 @@
         <activity android:name=".Tracking"/>
         <activity android:name=".AgenteComercial"/>
         <activity android:name=".OfertasUsuarios"/>
+        <activity
+            android:name=".AndroidLauncher"
+            android:label="Mini Juego"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize">
+        </activity>
 
     </application>
 
