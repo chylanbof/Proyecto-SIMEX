@@ -39,7 +39,7 @@ class BrumBrum : ApplicationAdapter() {
     private val obstaculos = mutableListOf<Rectangle>()
     private var timerObst = 0f
     private val intervalo = 2f
-    private val velObst = 300f
+    private val velObst = 500f
 
     // Progreso
     private var distancia = 0f
@@ -75,7 +75,6 @@ class BrumBrum : ApplicationAdapter() {
         canciones[0] = musica1
         canciones[1] = musica2
 
-        // Al terminar cada canción, pasa a la siguiente
         musica1.setOnCompletionListener { siguienteCancion() }
         musica2.setOnCompletionListener { siguienteCancion() }
 
@@ -97,10 +96,10 @@ class BrumBrum : ApplicationAdapter() {
         obstaculosSaltados = 0
         estado = Estado.JUGANDO
 
-        // Reiniciar música desde la primera canción
+        // Escoger canción aleatoria al reiniciar
         canciones.forEach { it?.stop() }
-        cancionActual = 0
-        canciones[0]?.play()
+        cancionActual = (Math.random() * canciones.size).toInt()
+        canciones[cancionActual]?.play()
     }
 
     override fun render() {
@@ -170,7 +169,6 @@ class BrumBrum : ApplicationAdapter() {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             estado = Estado.PAUSADO
-            canciones[cancionActual]?.pause()
             return
         }
 
