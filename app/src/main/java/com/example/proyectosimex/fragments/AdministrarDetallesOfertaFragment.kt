@@ -1,100 +1,90 @@
 package com.example.proyectosimex.fragments
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.Spinner
+import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.R
-
-// Muestra la oferta del cliente y el agente comercial puede administrarla,
-// en ese fragment cambiaremos el estado de los pasos segun el incoterm que tenga la oferta
-// y luego lo guardaremos en la base de datos.
-
-// siguiente a trabajar!!!!
-// en Desarrollo !!!!
+import com.example.proyectosimex.adapters.TrackingAdapter
+import com.example.proyectosimex.api.RetrofitClient
+import com.example.proyectosimex.clases.PasoSeguimiento
+import kotlinx.coroutines.launch
 
 class AdministrarDetallesOfertaFragment : Fragment(R.layout.fragment_ofertas_administrar_cambiar_estados) {
+
+    private lateinit var adapter: TrackingAdapter
+    private var idOferta: Int = 0
+    private var pasoActual: List<PasoSeguimiento> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Cambiar Header
         (activity as? AgenteComercial)?.actualizarTitulosHeader("Gestión de Oferta")
 
-        // Recuperar datos de la oferta seleccionada
-        val idOferta = arguments?.getInt("idOferta") ?: 0
-        val incotermSimulado = "EXW" // Esto vendrá de la API o del bundle más adelante
+        idOferta = arguments?.getInt("idOferta") ?: 0
 
-        /* // Pintar datos en la Card (Simulados de momento)
-        view.findViewById<TextView>(R.id.tvNumeroOferta).text = "Oferta #$idOferta"
-        view.findViewById<TextView>(R.id.tvIncoterms).text = "Incoterm: $incotermSimulado"
+        val rv = view.findViewById<RecyclerView>(R.id.rvTracking)
+        rv.layoutManager = LinearLayoutManager(requireContext())
+        adapter = TrackingAdapter(emptyList(), modoEdicion = true)
+        rv.adapter = adapter
 
-        // Generar Hitos Dinámicos
-        val contenedorHitos = view.findViewById<LinearLayout>(R.id.contenedorHitos)
-        generarHitosDinamicos(contenedorHitos, incotermSimulado)
+        cargarSeguimiento(view)
 
-        // Botón Guardar
         view.findViewById<Button>(R.id.btnGuardarCambios).setOnClickListener {
-            Toast.makeText(requireContext(), "Seguimiento guardado para $incotermSimulado", Toast.LENGTH_SHORT).show()
-            parentFragmentManager.popBackStack()
-        }*/
-
-       /* //Boton Cancelar
-        view.findViewById<Button>(R.id.btnCancelarDetalle).setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }*/
+            guardarCambios()
+        }
     }
 
-    private fun generarHitosDinamicos(contenedor: LinearLayout, incoterm: String) {
-        // Limpiamos por si acaso
-        contenedor.removeAllViews()
+    private fun cargarSeguimiento(view: View) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getSeguimiento(idOferta)
+                if (response.isSuccessful) {
+                    val seg = response.body()!!
+                    pasoActual = seg.pasos
 
-        // Definimos los pasos según el Incoterm
-        val pasos = when (incoterm) {
-            "EXW" -> listOf("Disponibilidad en Fábrica", "Carga en Vehículo")
-            "CIF" -> listOf("Salida Puerto Origen", "Tránsito Marítimo", "Llegada Puerto Destino", "Seguro Contratado")
-            "DDP" -> listOf("Despacho Aduana Origen", "Transporte Principal", "Despacho Aduana Destino", "Entrega Final")
-            else -> listOf("Estado General de la Oferta")
+                    view.findViewById<TextView>(R.id.tvNumeroOferta).text =
+                        "Oferta #${seg.ofertaId}"
+                    view.findViewById<TextView>(R.id.tvIncoterms).text =
+                        "Incoterm: ${seg.incotermNombre}"
+
+                    adapter.updateData(seg.pasos)
+                }
+            } catch (e: Exception) {
+                Log.e("ADMIN_DETALLE", "Error: ${e.message}")
+                Toast.makeText(requireContext(), "Error al cargar", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
 
-        val estadosPosibles = arrayOf("Pendiente", "En curso", "Completado")
+    private fun guardarCambios() {
+        lifecycleScope.launch {
+            try {
+                val pasos = adapter.getPasosActuales()
+                Log.d("GUARDAR", "idOferta: $idOferta, pasos: $pasos") // ← añade esto
 
-        // Creamos la interfaz para cada paso
-        pasos.forEach { nombrePaso ->
-            // Título del Hito
-            val tvHito = TextView(requireContext()).apply {
-                text = nombrePaso
-                textSize = 16f
-                setTypeface(null, Typeface.BOLD)
-                setTextColor(Color.parseColor("#FD7121")) // Tu naranja corporativo
-                setPadding(0, 32, 0, 8) // Margen superior para separar
+                val response = RetrofitClient.api.guardarSeguimiento(idOferta, pasos)
+
+                Log.d("GUARDAR", "Código respuesta: ${response.code()}") // ← y esto
+                Log.d("GUARDAR", "Error body: ${response.errorBody()?.string()}") // ← y esto
+
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Guardado correctamente", Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireContext(), "Error al guardar: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("GUARDAR", "Excepción: ${e.message}", e) // ← y esto
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-
-            // Spinner para el estado del Hito
-            val spinnerHito = Spinner(requireContext()).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    130 // Altura en píxeles (puedes ajustarlo)
-                )
-                // Usamos el fondo estándar de dropdown
-                background = ContextCompat.getDrawable(context, android.R.drawable.btn_dropdown)
-            }
-
-            // Llenar el spinner
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, estadosPosibles)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerHito.adapter = adapter
-
-            // Añadir al contenedor del XML
-            contenedor.addView(tvHito)
-            contenedor.addView(spinnerHito)
         }
     }
 }

@@ -1,14 +1,19 @@
 package com.example.proyectosimex.api
 
+import Envio
 import com.example.proyectosimex.clases.ContadorEstat
 import com.example.proyectosimex.clases.DniResponse
 import com.example.proyectosimex.clases.ItemCatalogo
 import com.example.proyectosimex.clases.LoginRequest
 import com.example.proyectosimex.clases.Oferta
+import com.example.proyectosimex.clases.PasoSeguimiento
+import com.example.proyectosimex.clases.SeguimientoEnvio
+import com.example.proyectosimex.clases.UpdateEstatRequest
 import com.example.proyectosimex.clases.UpdatePerfilRequest
 import com.example.proyectosimex.clases.Usuario
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -38,6 +43,27 @@ interface ApiService {
 
     @GET("api/Usuaris/dni/{id}")
     suspend fun getDni(@Path("id") id: Int): Response<DniResponse>
+
+    @PATCH("api/ofertes/{id}/estat")
+    suspend fun updateEstatOferta(
+        @Path("id") id: Int,
+        @Body request: UpdateEstatRequest
+    ): Response<Unit>
+
+    @GET("api/Envios/cliente/{clienteId}")
+    suspend fun getEnviosByCliente(@Path("clienteId") clienteId: Int): Response<List<Envio>>
+
+    @GET("api/Ofertes/{id}/Seguimiento")
+    suspend fun getSeguimiento(@Path("id") id: Int): Response<SeguimientoEnvio>
+
+    @POST("api/Ofertes/{id}/GuardarSeguimiento")
+    suspend fun guardarSeguimiento(
+        @Path("id") id: Int,
+        @Body pasos: List<PasoSeguimiento>
+    ): Response<Unit>
+
+    @DELETE("api/Envios/{id}")
+    suspend fun deleteEnvio(@Path("id") id: Int): Response<Unit>
 
     //Apis de Anthony
     @GET("api/Usuaris/rol/3")

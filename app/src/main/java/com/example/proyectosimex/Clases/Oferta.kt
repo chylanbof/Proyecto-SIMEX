@@ -17,22 +17,14 @@ data class Oferta(
     @SerializedName("estatOfertaId") val estatOfertaId: Int = 1,
     @SerializedName("operadorId") val operadorId: Int,
     @SerializedName("raoRebuig") val raoRebuig: String? = null,
-
-    // Origen y Destino (Puertos)
     @SerializedName("portOrigenId") val portOrigenId: Int? = null,
     @SerializedName("portDestiId") val portDestiId: Int? = null,
-
-    // Origen y Destino (Aeropuertos) - ¡IMPORTANTE AÑADIR ESTOS!
     @SerializedName("aeroportOrigenId") val aeroportOrigenId: Int? = null,
     @SerializedName("aeroportDestiId") val aeroportDestiId: Int? = null,
-
-    // Campos Logísticos
-    @SerializedName("transportistaId") val transportistaId: Int? = 1,
-    @SerializedName("tipusContenidorId") val tipusContenidorId: Int? = 1,
-    @SerializedName("estatEnvioId") val estatEnvioId: Int? = 1,
-
-    // Fechas
+    @SerializedName("transportistaId") val transportistaId: Int? = null,
+    @SerializedName("tipusContenidorId") val tipusContenidorId: Int? = null,
+    @SerializedName("estatEnvioId") val estatEnvioId: Int? = null,
     @SerializedName("dataCreacio") val dataCreacio: String,
     @SerializedName("dataValidessaInicial") val dataValidessaInicial: String?,
     @SerializedName("dataValidessaFina") val dataValidessaFina: String?
-                 )
+)

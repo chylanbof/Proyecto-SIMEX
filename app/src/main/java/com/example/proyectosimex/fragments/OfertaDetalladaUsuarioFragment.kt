@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.R
 import com.example.proyectosimex.api.RetrofitClient
+import com.example.proyectosimex.clases.UpdateEstatRequest
 import kotlinx.coroutines.launch
 
 // Fragment para el control de las ofertas que aceptara o rechazara el usuario
@@ -99,46 +100,28 @@ class OfertaDetalladaUsuarioFragment : Fragment(R.layout.fragment_oferta_detalla
     private fun actualizarEstadoEnServidor(idOferta: Int, nuevoEstado: Int, motivo: String? = null) {
         lifecycleScope.launch {
             try {
-                // Primero obtenemos la oferta actual para tener todos sus datos
-                val responseGet = RetrofitClient.api.getOfertasById(idOferta)
+                val responsePut = RetrofitClient.api.updateEstatOferta(
+                    idOferta,
+                    UpdateEstatRequest(nuevoEstado, motivo)
+                )
+                Log.d("OFERTA_UPDATE", "PATCH response code: ${responsePut.code()}")
+                Log.d("OFERTA_UPDATE", "PATCH error body: ${responsePut.errorBody()?.string()}")
 
-                if (responseGet.isSuccessful) {
-                    val ofertaActual = responseGet.body()
+                if (responsePut.isSuccessful) {
+                    val texto = if (nuevoEstado == 2) "Oferta Aceptada" else "Oferta Rechazada"
+                    Toast.makeText(requireContext(), texto, Toast.LENGTH_SHORT).show()
 
-                    if (ofertaActual != null) {
+                    val result = Bundle()
+                    result.putBoolean("refresh", true)
+                    parentFragmentManager.setFragmentResult("request_refresh", result)
+                    parentFragmentManager.popBackStack()
 
-                        // Creamos una copia modificando solo el estado y el motivo de rechazo
-                        val ofertaActualizada = ofertaActual.copy(
-                            estatOfertaId = nuevoEstado,
-                            raoRebuig = motivo
-                        )
-
-                        // Enviamos la actualización a la API
-                        val responsePut = RetrofitClient.api.actualizarOferta(idOferta, ofertaActualizada)
-
-                        if (responsePut.isSuccessful) {
-                            val texto: String
-                            if (nuevoEstado == 2){
-                                texto = "Oferta Aceptada"
-                            } else {
-                                texto = "Oferta Rechazada"
-                            }
-                            Toast.makeText(requireContext(), texto, Toast.LENGTH_SHORT).show()
-
-                            // Enviamos un refresh para que la lista de ofertas solo muestre los pendientes
-                            val result = Bundle()
-                            result.putBoolean("refresh", true)
-                            parentFragmentManager.setFragmentResult("request_refresh", result)
-
-                            // Volvemos atrás a la lista
-                            parentFragmentManager.popBackStack()
-                        } else {
-                            Toast.makeText(requireContext(), "Error al actualizar estado", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                } else {
+                    Toast.makeText(requireContext(), "Error al actualizar estado", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error de conexión: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("OFERTA_UPDATE", "Excepción: ${e.message}", e)
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

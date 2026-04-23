@@ -37,8 +37,8 @@ class Dashboard : AppCompatActivity() {
         val txtNumero2 = findViewById<TextView>(R.id.numero2)
         val txtNumero3 = findViewById<TextView>(R.id.numero3)
 
-        // Cargar contadores si tenemos un id válido
         if (usuarioId != -1) {
+            // Contadores de badges (En preparación, En tránsito, Entregado hoy)
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     Log.d("ESTADOS", "Llamando API con usuarioId=$usuarioId")
@@ -67,13 +67,41 @@ class Dashboard : AppCompatActivity() {
                             txtNumero1.text = enTransito.toString()
                             txtNumero2.text = enPreparacion.toString()
                             txtNumero3.text = entregado.toString()
-
                         } else {
                             Log.e("ESTADOS", "Error HTTP: ${response.code()}")
                         }
                     }
                 } catch (e: Exception) {
                     Log.e("ESTADOS", "Excepción: ${e.message}")
+                }
+            }
+
+            // Contadores de tarjetas (Resumen, Ofertas, Historial)
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val tvResumen = findViewById<TextView>(R.id.tvSubtituloResumen)
+                    val tvOfertas = findViewById<TextView>(R.id.tvSubtituloOfertas)
+                    val tvHistorial = findViewById<TextView>(R.id.tvSubtituloHistorial)
+
+                    val enviosResponse = RetrofitClient.api.getEnviosByCliente(usuarioId)
+                    val ofertasResponse = RetrofitClient.api.getOfertasByCliente(usuarioId)
+
+                    withContext(Dispatchers.Main) {
+                        if (enviosResponse.isSuccessful) {
+                            val envios = enviosResponse.body() ?: emptyList()
+                            val activos = envios.filter { it.estadoEnvio != "Entregado hoy" }.size
+                            val finalizados = envios.filter { it.estadoEnvio == "Entregado hoy" }.size
+                            tvResumen.text = "En reparto $activos"
+                            tvHistorial.text = "$finalizados Pedidos Guardados"
+                        }
+                        if (ofertasResponse.isSuccessful) {
+                            val pendientes = ofertasResponse.body()
+                                ?.filter { it.estatOfertaId == 1 }?.size ?: 0
+                            tvOfertas.text = "$pendientes Ofertas Disponibles"
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("DASHBOARD", "Error contadores tarjetas: ${e.message}")
                 }
             }
         }
@@ -96,16 +124,19 @@ class Dashboard : AppCompatActivity() {
 
         findViewById<CardView>(R.id.cardResumen).setOnClickListener {
             val intent = Intent(this, Resumen::class.java)
+            intent.putExtra("usuario_id", usuarioId)
             startActivity(intent)
         }
 
         findViewById<CardView>(R.id.cardHistorial).setOnClickListener {
             val intent = Intent(this, Historial::class.java)
+            intent.putExtra("usuario_id", usuarioId)
             startActivity(intent)
         }
 
         findViewById<CardView>(R.id.cardOfertas).setOnClickListener {
             val intent = Intent(this, OfertasUsuarios::class.java)
+            intent.putExtra("usuario_id", usuarioId)
             startActivity(intent)
         }
     }

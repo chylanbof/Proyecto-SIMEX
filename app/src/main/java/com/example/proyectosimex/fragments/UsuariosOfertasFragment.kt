@@ -30,9 +30,7 @@ class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // recuperamos el id del cliente que se ha logueado para poder mostrar sus ofertas
-        /*val prefs = requireActivity().getSharedPreferences("MiApprefs", android.content.Context.MODE_PRIVATE)
-        clientId = prefs.getInt("clientId", 0)*/
+        clientId = arguments?.getInt("usuario_id", -1) ?: -1
 
         //Llamamos a la funcion para cambiar el nombre del header
         (activity as? OfertasUsuarios)?.actualizarTitulosHeader("Ofertas del Cliente")

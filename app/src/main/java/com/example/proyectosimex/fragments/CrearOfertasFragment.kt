@@ -217,10 +217,12 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
     private fun enviarOferta(oferta: Oferta){
         lifecycleScope.launch {
             try {
+                val gson = com.google.gson.Gson()
+                Log.d("DEBUG_JSON", gson.toJson(oferta))  // ← añade esta línea aquí
+
                 val response = RetrofitClient.api.crearOferta(oferta)
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "Oferta guardada correctamente", Toast.LENGTH_SHORT).show()
-                    // Volvemos a la pantalla anterior (lista de ofertas)
                     parentFragmentManager.popBackStack()
                 } else {
                     Log.e("API_ERROR", "Error: ${response.code()} - ${response.errorBody()?.string()}")
@@ -232,5 +234,5 @@ class CrearOfertasFragment : Fragment(R.layout.fragment_crear_ofertas){
             }
         }
     }
-
 }
+

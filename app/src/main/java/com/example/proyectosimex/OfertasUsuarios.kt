@@ -15,6 +15,8 @@ class OfertasUsuarios : AppCompatActivity(){
 
         setContentView(R.layout.activity_ofertas_clientes)
 
+        val usuarioId = intent.getIntExtra("usuario_id", -1)
+
         val header = findViewById<View>(R.id.LayoutOfertasClientes)
         header.findViewById<ImageView>(R.id.imgBackgroundHeader).setImageResource(R.drawable.oferta)
 
@@ -24,13 +26,16 @@ class OfertasUsuarios : AppCompatActivity(){
             finish()
         }
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
+            val fragment = UsuariosOfertasFragment()
+            val bundle = Bundle()
+            bundle.putInt("usuario_id", usuarioId)
+            fragment.arguments = bundle
+
             supportFragmentManager.beginTransaction()
-                .replace(R.id.FramgmentContainerOfertasCliente,
-                UsuariosOfertasFragment())
+                .replace(R.id.FramgmentContainerOfertasCliente, fragment)
                 .commit()
         }
-
     }
 
     fun actualizarTitulosHeader(nuevoTitulo: String){

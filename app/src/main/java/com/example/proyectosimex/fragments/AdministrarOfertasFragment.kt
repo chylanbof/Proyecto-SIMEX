@@ -1,6 +1,7 @@
 package com.example.proyectosimex.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.proyectosimex.R
 import android.view.View
@@ -52,6 +53,7 @@ class AdministrarOfertasFragment : Fragment(R.layout.fragment_ofertas_para_admin
 
     private fun obtenerOfertasDelCliente(){
         lifecycleScope.launch {
+            Log.d("DEBUG_OFERTAS", "Cargando ofertas para clientId: $clientId")
             try {
                 // Cargamos catálogos para traducir nombres
                 val incos = RetrofitClient.api.getIncoterms().associate { it.id to (it.nom ?: "N/A") }

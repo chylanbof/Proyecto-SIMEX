@@ -5,7 +5,7 @@ data class Envio(
     val estadoEnvio: String,
     val ofertaId: String,
     val contenidoEnvio: String,
-    val metodTransporte: String,
+    val metodoTransporte: String,
     val tipoDivisa: String,
     val fechaPedido: String,
     val cliente: String,
