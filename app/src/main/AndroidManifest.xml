@@ -4,6 +4,9 @@
 
     <!-- Permiso para que la aplicacion se pueda conectar con la base de datos-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permiso para acceder a los archivos y descargar el dni-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
 
 
     <application
@@ -16,18 +19,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoSIMEX"
         android:usesCleartextTraffic="true">
+
+
         <activity
-            android:name=".AgenteComercial"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> 
         </activity>
 <!--        activity del dashboard-->
         <activity android:name=".Dashboard" />
         <activity android:name=".Notificaciones"/>
+        <activity android:name=".Perfil"/>
+        <activity android:name=".Historial"/>
+        <activity android:name=".NombrePedido"/>
+        <activity android:name=".Resumen"/>
+        <activity android:name=".Tracking"/>
+        <activity android:name=".AgenteComercial"/>
+        <activity android:name=".OfertasUsuarios"/>
+        <activity
+            android:name=".AndroidLauncher"
+            android:label="Mini Juego"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize">
+        </activity>
+
     </application>
+
+
 
 </manifest>

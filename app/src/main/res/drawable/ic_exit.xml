@@ -1,0 +1,43 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Caja con esquinas redondeadas -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M5,3
+            h10
+            a2,2 0 0 1 2,2
+            v4
+            h-2
+            v-4
+            h-10
+            v14
+            h10
+            v-4
+            h2
+            v4
+            a2,2 0 0 1 -2,2
+            h-10
+            a2,2 0 0 1 -2,-2
+            v-14
+            a2,2 0 0 1 2,-2
+        " />
+
+    <!-- Flecha hacia la derecha -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M13,8
+            l5,4
+            -5,4
+            v-3
+            h-6
+            v-2
+            h6
+            z
+        " />
+</vector>

@@ -20,34 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- En tránsito -->
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="169dp"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/enTransito"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:src="@drawable/transito"/>
-
-            <TextView
-                android:id="@+id/numero1"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="top|end"
-                android:layout_margin="6dp"
-                android:text="0"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:background="@drawable/badge_background"/>
-
-        </FrameLayout>
 
         <!-- En preparación -->
         <FrameLayout
@@ -65,6 +37,35 @@
 
             <TextView
                 android:id="@+id/numero2"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="6dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:background="@drawable/badge_background"/>
+
+        </FrameLayout>
+
+        <!-- En tránsito -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="169dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/enTransito"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:src="@drawable/transito"/>
+
+            <TextView
+                android:id="@+id/numero1"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="top|end"
@@ -109,13 +110,13 @@
 
     </LinearLayout>
 
-    <!-- Tarjetas naranjas -->
+    <!-- Tarjetas-->
     <LinearLayout
         android:id="@+id/layoutTarjetas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="3dp"
         app:layout_constraintTop_toBottomOf="@id/layoutEstados"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -124,18 +125,18 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardResumen"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#FF8C42">
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:paddingStart="16dp"
                 android:gravity="center_vertical">
 
                 <LinearLayout
@@ -150,23 +151,22 @@
                         android:layout_height="wrap_content"
                         android:text="Resumen"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"/>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tvSubtituloResumen"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="En reparto 1"
-                        android:textSize="14sp"
-                        android:textColor="#FFFFFF"/>
+                        android:text="En reparto 0"
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/ivIconoResumen"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_resumen"
                     android:scaleType="fitCenter"/>
 
@@ -178,18 +178,18 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardOfertas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#FF8C42">
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:paddingStart="16dp"
                 android:gravity="center_vertical">
 
                 <LinearLayout
@@ -204,23 +204,22 @@
                         android:layout_height="wrap_content"
                         android:text="Ofertas"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"/>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tvSubtituloOfertas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2 Ofertas Disponibles"
-                        android:textSize="14sp"
-                        android:textColor="#FFFFFF"/>
+                        android:text="0 Ofertas Disponibles"
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/ivIconoOfertas"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_ofertas"
                     android:scaleType="fitCenter"/>
 
@@ -232,18 +231,18 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardHistorial"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#FF8C42">
+            app:cardBackgroundColor="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:paddingStart="16dp"
                 android:gravity="center_vertical">
 
                 <LinearLayout
@@ -258,23 +257,22 @@
                         android:layout_height="wrap_content"
                         android:text="Historial"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"/>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tvSubtituloHistorial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10 Pedidos Guardados"
-                        android:textSize="14sp"
-                        android:textColor="#FFFFFF"/>
+                        android:text="0 Pedidos Guardados"
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/ivIconoHistorial"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_historial"
                     android:scaleType="fitCenter"/>
 
