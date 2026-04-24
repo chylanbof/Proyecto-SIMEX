@@ -106,11 +106,6 @@ class Dashboard : AppCompatActivity() {
             }
         }
 
-        val btnNotificaciones = findViewById<ImageButton>(R.id.btnNotificaciones)
-        btnNotificaciones.setOnClickListener {
-            mostrarMenu(btnNotificaciones)
-        }
-
         val btnPerfil = findViewById<AppCompatButton>(R.id.perfil)
         btnPerfil.setOnClickListener {
             val intent = Intent(this, Perfil::class.java)
@@ -144,24 +139,5 @@ class Dashboard : AppCompatActivity() {
             val intent = Intent(this, AndroidLauncher::class.java)
             startActivity(intent)
         }
-    }
-
-    fun mostrarMenu(anchor: View) {
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView = inflater.inflate(R.layout.popup_notificaciones, null)
-
-        val popupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        val location = IntArray(2)
-        anchor.getLocationInWindow(location)
-        val posX = location[0] + anchor.width + 10
-        val posY = location[1]
-
-        popupWindow.showAtLocation(anchor, android.view.Gravity.NO_GRAVITY, posX, posY)
     }
 }

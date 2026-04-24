@@ -33,15 +33,16 @@ class MainActivity : AppCompatActivity() {
 
             val request = LoginRequest(usuario, password)
 
-            CoroutineScope(Dispatchers.IO).launch {
-
+            CoroutineScope(Dispatchers.IO).launch { //hace una llamada a internet en segundo plano
+                //para que la app no se congele mientras espera la respuesta
                 try {
-                    val response = RetrofitClient.api.login(request)
+                    val response = RetrofitClient.api.login(request) //la respuesta es lo que le diga el login
+                    // de la api
 
-                    withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) { //vuelve al hilo principal para que la app no pete
 
                         if (response.isSuccessful) {
-                            val user = response.body()
+                            val user = response.body() //user es igual al contenido que devolvio la api
 
                             val intent = when (user?.rolId) {
                                 4 -> Intent(this@MainActivity, AgenteComercial::class.java)  // rol 4 = agente

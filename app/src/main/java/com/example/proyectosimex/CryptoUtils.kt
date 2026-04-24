@@ -19,10 +19,6 @@ object CryptoUtils {
     fun claveABase64(clave: SecretKey): String =
         Base64.encodeToString(clave.encoded, Base64.NO_WRAP)
 
-    fun base64AClave(base64: String): SecretKey {
-        val bytes = Base64.decode(base64, Base64.DEFAULT)
-        return SecretKeySpec(bytes, "AES")
-    }
 
 
     fun encriptar(datos: ByteArray, clave: SecretKey): ByteArray {
@@ -30,7 +26,7 @@ object CryptoUtils {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, clave, IvParameterSpec(iv))
         val encriptado = cipher.doFinal(datos)
-        return iv + encriptado  // guardamos IV al inicio
+        return iv + encriptado
     }
 
 

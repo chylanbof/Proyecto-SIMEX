@@ -17,11 +17,7 @@ import kotlinx.coroutines.launch
 import okhttp3.Response
 import kotlin.collections.emptyList
 
-// Fragment donde se muestran las ofertas que han sido creadas por el agente comercial
-// y tiene que aceptar o no el usuario
 
-
-// Finalizado (Solo flata recibir el usuario del login)
 class UsuariosOfertasFragment : Fragment(R.layout.fragment_ofertas_cliente) {
 
     private lateinit var adapter: OfertaUsuariosAdapter

@@ -32,8 +32,7 @@ class Perfil : AppCompatActivity() {
     private var dniBase64: String? = null
     private var usuarioId: Int = -1
 
-    // Launcher para seleccionar imagen de galería
-    // Launcher - ahora sube automáticamente al seleccionar
+
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->

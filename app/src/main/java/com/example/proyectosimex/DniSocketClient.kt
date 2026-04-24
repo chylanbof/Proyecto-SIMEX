@@ -22,7 +22,7 @@ object DniSocketClient {
     fun subirDNI(usuarioId: Int, bytesImagen: ByteArray): String? {
         Log.d(TAG, "▶ subirDNI iniciado — usuarioId=$usuarioId, tamaño=${bytesImagen.size} bytes")
 
-        // El cliente genera la clave
+        // Esto genera la clave
         val clave = CryptoUtils.generarClave()
         val claveBase64 = CryptoUtils.claveABase64(clave)
         val bytesEncriptados = CryptoUtils.encriptar(bytesImagen, clave)

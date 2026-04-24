@@ -45,7 +45,7 @@ class Historial : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         adapter = HistorialAdapter(emptyList()) { envio ->
-            // de momento vacío, cuando quieras abrimos el detalle
+
         }
         rv.adapter = adapter
 
