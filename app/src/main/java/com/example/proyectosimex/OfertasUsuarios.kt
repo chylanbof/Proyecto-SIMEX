@@ -7,7 +7,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyectosimex.fragments.UsuariosOfertasFragment
+import com.example.proyectosimex.Fragments.UsuariosOfertasFragment
 
 class OfertasUsuarios : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
