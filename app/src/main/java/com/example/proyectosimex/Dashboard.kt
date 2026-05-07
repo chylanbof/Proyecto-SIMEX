@@ -46,9 +46,6 @@ class Dashboard : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             val contadors = response.body() ?: emptyList()
-                            contadors.forEach {
-                                Log.d("ESTADOS", "estat: '${it.estat}' | count: ${it.count}")
-                            }
 
                             val enTransito = contadors.find {
                                 it.estat.contains("tránsito", ignoreCase = true) ||
@@ -63,10 +60,13 @@ class Dashboard : AppCompatActivity() {
                                 it.estat.contains("entregado", ignoreCase = true) ||
                                         it.estat.contains("entregat", ignoreCase = true)
                             }?.count ?: 0
+                            //Busca y cuenta los pedidos por estado
 
                             txtNumero1.text = enTransito.toString()
                             txtNumero2.text = enPreparacion.toString()
                             txtNumero3.text = entregado.toString()
+
+                            //cambia el numero por el numero que haya contado en las anteriores
                         } else {
                             Log.e("ESTADOS", "Error HTTP: ${response.code()}")
                         }

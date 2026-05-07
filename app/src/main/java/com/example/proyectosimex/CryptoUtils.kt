@@ -26,11 +26,13 @@ object CryptoUtils {
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, clave, IvParameterSpec(iv))
         val encriptado = cipher.doFinal(datos)
+        //aqui devuelve el iv junto a la cosa encriptada para luego descifrarlo
         return iv + encriptado
     }
 
 
     fun desencriptar(datos: ByteArray, clave: SecretKey): ByteArray {
+        //con esto separo el iv y el contenido cifrado
         val iv = datos.copyOfRange(0, 16)
         val contenido = datos.copyOfRange(16, datos.size)
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")

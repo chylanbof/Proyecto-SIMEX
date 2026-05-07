@@ -22,7 +22,7 @@ object DniSocketClient {
     fun subirDNI(usuarioId: Int, bytesImagen: ByteArray): String? {
         Log.d(TAG, "▶ subirDNI iniciado — usuarioId=$usuarioId, tamaño=${bytesImagen.size} bytes")
 
-        // Esto genera la clave
+        //genera la clave, la convierte a base64 y luego la cifra
         val clave = CryptoUtils.generarClave()
         val claveBase64 = CryptoUtils.claveABase64(clave)
         val bytesEncriptados = CryptoUtils.encriptar(bytesImagen, clave)
@@ -112,7 +112,6 @@ object DniSocketClient {
 
                 val claveBytes = Base64.decode(claveBase64, Base64.NO_WRAP)
                 val clave = SecretKeySpec(claveBytes, "AES")
-                // Antes de CryptoUtils.desencriptar
                 Log.d(TAG, "🔓 Desencriptando ${bytesEncriptados.size} bytes, primeros: ${bytesEncriptados.take(16).map { it.toInt() and 0xFF }}")
                 val resultado = CryptoUtils.desencriptar(bytesEncriptados, clave)
                 Log.d(TAG, "✅ Desencriptado OK — tamaño final: ${resultado.size} bytes")

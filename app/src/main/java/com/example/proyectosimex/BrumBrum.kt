@@ -53,9 +53,6 @@ val TODAS_LAS_MEJORAS = listOf(
     Mejora("tripleRec",     "Azar Triple",           "En la proxima eleccion aparecen 5 cartas.",         "[AZR]",   Rareza.LEGENDARIO)
                               )
 
-// ─────────────────────────────────────────────
-//  JUEGO PRINCIPAL
-// ─────────────────────────────────────────────
 
 class BrumBrum : ApplicationAdapter() {
 
