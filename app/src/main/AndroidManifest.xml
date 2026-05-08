@@ -10,6 +10,7 @@
 
 
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,7 +23,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name=".AgenteComercial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +39,7 @@
         <activity android:name=".NombrePedido"/>
         <activity android:name=".Resumen"/>
         <activity android:name=".Tracking"/>
-        <activity android:name=".AgenteComercial"/>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".OfertasUsuarios"/>
         <activity
             android:name=".AndroidLauncher"

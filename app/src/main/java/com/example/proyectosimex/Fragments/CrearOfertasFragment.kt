@@ -1,5 +1,5 @@
 
-package com.example.proyectosimex.fragments
+package com.example.proyectosimex.Fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.proyectosimex.AgenteComercial

@@ -3,11 +3,10 @@ package com.example.proyectosimex
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyectosimex.fragments.UsuariosFragment
-
+import com.example.proyectosimex.Fragments.UsuariosFragment
+import com.example.proyectosimex.Fragments.ChatFragment
 
 // activity que controla los fragment de UsuarioFragment, DetalleOfertaFragment,
 // CrearOfertasFragment, AdministrarOfertasFragment
@@ -35,12 +34,33 @@ class AgenteComercial : AppCompatActivity() {
                 intent.putExtra("usuario_telefon", usuarioTelefon)
                 startActivity(intent)
             }
+
+        // Botón Chat -> abre el ChatFragment
+        header.findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.btnChat)
+            .setOnClickListener {
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.FragmentContainer)
+
+                if (currentFragment is ChatFragment) {
+                    // Si ya estamos en el chat, retrocedemos al fragmento anterior
+                    supportFragmentManager.popBackStack()
+                } else {
+                    // Si no estamos en el chat, lo abrimos normalmente
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.FragmentContainer, ChatFragment())
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+
+
         if (savedInstanceState == null){
             supportFragmentManager.beginTransaction()
                 .replace(R.id.FragmentContainer, UsuariosFragment())
                 .commit()
 
         }
+
+
     }
 
     fun actualizarTitulosHeader(nuevoTitulo: String){
@@ -49,7 +69,6 @@ class AgenteComercial : AppCompatActivity() {
         val txtHeader = findViewById<TextView>(R.id.txtHeaderTitle)
         txtHeader?.text = nuevoTitulo
     }
-
 
 
 }

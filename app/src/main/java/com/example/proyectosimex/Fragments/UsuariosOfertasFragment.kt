@@ -1,4 +1,4 @@
-package com.example.proyectosimex.fragments
+package com.example.proyectosimex.Fragments
 
 import android.os.Bundle
 import android.view.View
@@ -8,13 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectosimex.adapters.OfertaUsuariosAdapter
-import com.example.proyectosimex.AgenteComercial
 import com.example.proyectosimex.clases.Oferta
 import com.example.proyectosimex.OfertasUsuarios
 import com.example.proyectosimex.R
 import com.example.proyectosimex.api.RetrofitClient
 import kotlinx.coroutines.launch
-import okhttp3.Response
 import kotlin.collections.emptyList
 
 
