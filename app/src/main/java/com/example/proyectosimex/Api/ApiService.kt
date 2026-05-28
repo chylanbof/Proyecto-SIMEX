@@ -1,6 +1,8 @@
 package com.example.proyectosimex.api
 
 import Envio
+import com.example.proyectosimex.adapters.PartidaRequest
+import com.example.proyectosimex.adapters.RecordRequest
 import com.example.proyectosimex.clases.ContadorEstat
 import com.example.proyectosimex.clases.DniResponse
 import com.example.proyectosimex.clases.ItemCatalogo
@@ -21,7 +23,21 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
+    //DylanExtra
+    @GET("api/Usuaris/nombres")
+    suspend fun getNombresUsuarios(): Response<List<String>> //devuelve la lista de nombres de la base de datos
 
+    @POST("api/usuaris/partida")
+    suspend fun crearPartida(@Body body: PartidaRequest): Response<Unit>
+
+    @GET("api/usuaris/record/{id}")
+    suspend fun getRecord(@Path("id") id: Int): Response<Int>
+
+    @PUT("api/usuaris/record/{id}")
+    suspend fun updateRecord(@Path("id") id: Int, @Body body: RecordRequest): Response<Unit>
+
+    @DELETE("api/Usuaris/record/{id}")
+    suspend fun deleteRecord(@Path("id") id: Int): Response<Unit>
     //Apis de Dylan
     @POST("api/Usuaris/login")
     suspend fun login(@Body request: LoginRequest): Response<Usuario>

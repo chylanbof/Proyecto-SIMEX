@@ -12,6 +12,12 @@ public class AndroidLauncher extends AndroidApplication {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
         configuration.useImmersiveMode = true;
-        initialize(new BrumBrum(), configuration);
+
+
+        int usuarioId = getIntent().getIntExtra("usuario_id", -1);
+
+
+        BrumBrum juego = new BrumBrum(usuarioId);
+        initialize(juego, configuration);
     }
 }

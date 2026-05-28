@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
+import com.example.proyectosimex.adapters.PartidaRequest
+import com.example.proyectosimex.adapters.RecordRequest
+import com.example.proyectosimex.api.RetrofitClient
+import kotlinx.coroutines.runBlocking
 
 // ─────────────────────────────────────────────
 //  MEJORAS ROGUELIKE
@@ -23,7 +27,12 @@ data class Mejora(
     val descripcion: String,
     val emoji: String,
     val rareza: Rareza
-                 )
+)
+
+data class Obstaculo(
+    val rect: Rectangle,
+    val nombre: String
+)
 
 val TODAS_LAS_MEJORAS = listOf(
     // COMUNES
@@ -51,10 +60,10 @@ val TODAS_LAS_MEJORAS = listOf(
     Mejora("explosion",     "Explosion de Ira",      "Al recibir dano, destruyes todos los obstaculos.",  "[EXP]",   Rareza.LEGENDARIO),
     Mejora("slowPerm",      "Modo Tortuga",          "TODO va mas lento de forma permanente.",            "[TRT]",   Rareza.LEGENDARIO),
     Mejora("tripleRec",     "Azar Triple",           "En la proxima eleccion aparecen 5 cartas.",         "[AZR]",   Rareza.LEGENDARIO)
-                              )
+)
 
 
-class BrumBrum : ApplicationAdapter() {
+class BrumBrum(private val usuarioId: Int = -1) : ApplicationAdapter() {
 
     private lateinit var shape: ShapeRenderer
     private lateinit var batch: SpriteBatch
@@ -68,7 +77,7 @@ class BrumBrum : ApplicationAdapter() {
     private var canciones = arrayOfNulls<Music>(2)
     private var cancionActual = 0
 
-    // Camión — valores BASE (se restauran entre rutas si hace falta)
+    // Camión
     private var truckY = 0f
     private var velY = 0f
     private var enSuelo = true
@@ -78,13 +87,12 @@ class BrumBrum : ApplicationAdapter() {
     private val SUELO_Y = 80f
 
     // ─── Contador de stacks por mejora ───────────────────────────────────────
-    // Cada entrada guarda cuántas veces se ha cogido esa mejora
     private val stacksMejoras = mutableMapOf<String, Int>()
 
     private fun stacksDe(id: String) = stacksMejoras.getOrDefault(id, 0)
     private fun tieneUpgrade(id: String) = stacksDe(id) > 0
 
-    // Stats modificables por mejoras (se recalculan desde cero en cada reiniciarRuta)
+    // Stats modificables por mejoras
     private var gravedad = -1800f
     private var fuerzaSalto = 700f
     private var velObst = 500f
@@ -93,7 +101,7 @@ class BrumBrum : ApplicationAdapter() {
     private var cartasExtra = 0
 
     // Obstáculos
-    private val obstaculos = mutableListOf<Rectangle>()
+    private val obstaculos = mutableListOf<Obstaculo>()
     private var timerObst = 0f
     private val intervalo = 2f
     private var alturaMultObst = 1f
@@ -108,16 +116,26 @@ class BrumBrum : ApplicationAdapter() {
     private var invulnerable = 0f
 
     // ─── Power-ups activos en esta ruta ──────────────────────────────────────
-    private var escudosRestantes = 0         // stackea: 1 escudo por stack de "escudo"
-    private var saltosMaximos = 1            // 1 base + 1 por cada stack de dobleJump
+    private var escudosRestantes = 0
+    private var saltosMaximos = 1
     private var saltosRestantes = 1
-    private var bolasRestantes = 0           // 1 bola por stack de bolaFuego
+    private var bolasRestantes = 0
     private var tiempoBalaActivo = 0f
     private var fantasmaActivo = 0f
-    private var rompeRestantes = 0           // 1 rotura gratis por stack de romperPrimero
-    private var segundasOportRestantes = 0   // 1 por stack de segundaOport
-    private var explosionesRestantes = 0     // 1 por stack de explosion
+    private var rompeRestantes = 0
+    private var segundasOportRestantes = 0
+    private var explosionesRestantes = 0
     private var slowPermActivo = false
+
+    // ─── Puntuación ──────────────────────────────────────────────────────────
+    private var puntuacion = 0
+    private var golpesEnRuta = 0
+    private var puntuacionServidor = 0
+
+    // DylanExtra
+    private var nombresTransportistas = listOf("Obstaculo")
+
+    private lateinit var btnBorrarRecord: Rectangle
 
     // ─── Estados ───
     private enum class Estado { JUGANDO, PAUSADO, ELIGIENDO, GANADO, PERDIDO }
@@ -155,6 +173,23 @@ class BrumBrum : ApplicationAdapter() {
         musica2.setOnCompletionListener { siguienteCancion() }
         canciones[0]?.play()
 
+        Thread {
+            try {
+                // DylanExtra: cargar nombres
+                val response = runBlocking { RetrofitClient.api.getNombresUsuarios() }
+                if (response.isSuccessful) {
+                    val nombres = response.body()
+                    if (!nombres.isNullOrEmpty()) nombresTransportistas = nombres
+                }
+
+                // Cargar récord del servidor
+                if (usuarioId != -1) {
+                    val rec = runBlocking { RetrofitClient.api.getRecord(usuarioId) }
+                    if (rec.isSuccessful) puntuacionServidor = rec.body() ?: 0
+                }
+            } catch (e: Exception) { }
+        }.start()
+
         reiniciarTotal()
     }
 
@@ -165,6 +200,8 @@ class BrumBrum : ApplicationAdapter() {
         slowPermActivo = false
         truckW = 100f
         truckH = 50f
+        puntuacion = 0
+        golpesEnRuta = 0
         reiniciarRuta()
         estado = Estado.JUGANDO
         cancionActual = (Math.random() * canciones.size).toInt()
@@ -172,9 +209,7 @@ class BrumBrum : ApplicationAdapter() {
     }
 
     // ─── Recalcula todos los stats a partir de los stacks acumulados ──────────
-    // Se llama cada vez que empieza una ruta nueva para aplicar bien todo.
     private fun recalcularStats() {
-        // Resetear a base
         gravedad = -1800f
         fuerzaSalto = 700f
         velObst = 500f
@@ -185,41 +220,33 @@ class BrumBrum : ApplicationAdapter() {
         truckW = 100f
         truckH = 50f
 
-        // Aplicar cada mejora tantas veces como stacks tenga
-        repeat(stacksDe("salto"))      { fuerzaSalto += 100f }
-        repeat(stacksDe("gravedad"))   { gravedad *= 0.9f }
-        repeat(stacksDe("hitbox"))     { truckW *= 0.85f; truckH *= 0.85f }
-        repeat(stacksDe("invul"))      { duracionInvul += 1f }
-        repeat(stacksDe("progExtra"))  { multiplicadorProgreso += 0.2f }
+        repeat(stacksDe("salto"))        { fuerzaSalto += 100f }
+        repeat(stacksDe("gravedad"))     { gravedad *= 0.9f }
+        repeat(stacksDe("hitbox"))       { truckW *= 0.85f; truckH *= 0.85f }
+        repeat(stacksDe("invul"))        { duracionInvul += 1f }
+        repeat(stacksDe("progExtra"))    { multiplicadorProgreso += 0.2f }
         repeat(stacksDe("obstPequeños")) { alturaMultObst *= 0.7f }
-        // tripleRec: solo importa la cantidad de cartas en la próxima elección
         if (stacksDe("tripleRec") > 0) cartasExtra = stacksDe("tripleRec") * 2
-
-        // velObst se aplica después de la dificultad progresiva, ver aplicarDificultadProgresiva()
-
-        // Slow perm: se activa si tienes al menos 1 stack
-        if (stacksDe("slowPerm") > 0) {
-            slowPermActivo = true
-        }
+        if (stacksDe("slowPerm") > 0) slowPermActivo = true
     }
 
     // ─── Reinicio de RUTA ────────────────────────────────────────────────────
     private fun reiniciarRuta() {
         recalcularStats()
-        aplicarDificultadProgresiva()   // ajusta velObst según ruta + stacks de velObst/slowPerm
+        aplicarDificultadProgresiva()
 
         truckY = SUELO_Y; velY = 0f; enSuelo = true
         obstaculos.clear(); timerObst = 0f
-        distancia = 0f; vidas = 3 + stacksDe("vida")   // vida base + stacks
+        distancia = 0f; vidas = 3 + stacksDe("vida")
         invulnerable = 0f
         obstaculosSaltados = 0
+        golpesEnRuta = 0
 
-        // Power-ups que se recargan cada ruta según stacks
-        escudosRestantes    = stacksDe("escudo")
-        saltosMaximos       = 1 + stacksDe("dobleJump")   // 1 base + 1 por stack
-        saltosRestantes     = saltosMaximos
-        bolasRestantes      = stacksDe("bolaFuego")
-        rompeRestantes      = stacksDe("romperPrimero")
+        escudosRestantes       = stacksDe("escudo")
+        saltosMaximos          = 1 + stacksDe("dobleJump")
+        saltosRestantes        = saltosMaximos
+        bolasRestantes         = stacksDe("bolaFuego")
+        rompeRestantes         = stacksDe("romperPrimero")
         segundasOportRestantes = stacksDe("segundaOport")
         explosionesRestantes   = stacksDe("explosion")
 
@@ -234,8 +261,7 @@ class BrumBrum : ApplicationAdapter() {
     //  SORTEO DE MEJORAS
     // ─────────────────────────────────────────────────────────────────────────
     private fun sortearMejoras() {
-        // Con tripleRec: 3 cartas base + 2 extra por cada stack
-        cantOpciones = 3 + (stacksDe("tripleRec") * 2).coerceAtMost(2)  // máx 5
+        cantOpciones = 3 + (stacksDe("tripleRec") * 2).coerceAtMost(2)
         opcionesMejora.clear()
         val disponibles = TODAS_LAS_MEJORAS.toMutableList()
         repeat(cantOpciones) {
@@ -259,9 +285,13 @@ class BrumBrum : ApplicationAdapter() {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  APLICAR MEJORA ELEGIDA — solo incrementa el stack, reiniciarRuta recalcula
+    //  APLICAR MEJORA ELEGIDA
     // ─────────────────────────────────────────────────────────────────────────
     private fun aplicarMejora(m: Mejora) {
+        val puntosRuta = (100 + rutasCompletadas * 75) - (golpesEnRuta * 30)
+        puntuacion += maxOf(puntosRuta, 0)
+
+
         stacksMejoras[m.id] = stacksDe(m.id) + 1
         rutasCompletadas++
         reiniciarRuta()
@@ -275,10 +305,11 @@ class BrumBrum : ApplicationAdapter() {
         val W = Gdx.graphics.width.toFloat()
         val H = Gdx.graphics.height.toFloat()
 
-        btnPausa      = Rectangle(W - 80f,  H - 70f,   60f,  50f)
-        btnContinuar  = Rectangle(W / 2 - 120f, H / 2,  240f, 55f)
-        btnSalir      = Rectangle(W / 2 - 120f, H / 2 - 80f, 240f, 55f)
-        btnBolaFuego  = Rectangle(W - 80f,  H - 140f,  60f,  50f)
+        btnPausa     = Rectangle(W - 80f,       H - 70f,        60f,  50f)
+        btnContinuar = Rectangle(W / 2 - 120f,  H / 2,          240f, 55f)
+        btnSalir     = Rectangle(W / 2 - 120f,  H / 2 - 80f,    240f, 55f)
+        btnBolaFuego = Rectangle(W - 80f,       H - 140f,       60f,  50f)
+        btnBorrarRecord = Rectangle(W / 2 - 120f, H / 2 - 170f, 240f, 55f)
 
         Gdx.gl.glClearColor(0.53f, 0.81f, 0.92f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -353,6 +384,7 @@ class BrumBrum : ApplicationAdapter() {
         when {
             btnContinuar.contains(tx, ty) -> { estado = Estado.JUGANDO; canciones[cancionActual]?.play() }
             btnSalir.contains(tx, ty)     -> Gdx.app.exit()
+            btnBorrarRecord.contains(tx, ty) -> resetearRecord()
         }
     }
 
@@ -372,7 +404,6 @@ class BrumBrum : ApplicationAdapter() {
     //  ACTUALIZAR
     // ─────────────────────────────────────────────────────────────────────────
     private fun actualizar(dt: Float, W: Float, H: Float) {
-        // Teclado
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (enSuelo || saltosRestantes > 0) {
                 velY = fuerzaSalto; enSuelo = false; saltosRestantes--
@@ -382,21 +413,18 @@ class BrumBrum : ApplicationAdapter() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F) && bolasRestantes > 0 && !bolaActiva) lanzarBolaFuego()
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) { estado = Estado.PAUSADO; return }
 
-        // Timers de efectos
         val effectDt = if (tiempoBalaActivo > 0) dt * 0.4f else dt
         tiempoBalaActivo = maxOf(0f, tiempoBalaActivo - dt)
         fantasmaActivo   = maxOf(0f, fantasmaActivo - dt)
         invulnerable     = maxOf(0f, invulnerable - dt)
 
-        // Física
         velY += gravedad * effectDt
         truckY += velY * effectDt
         if (truckY <= SUELO_Y) {
             truckY = SUELO_Y; velY = 0f; enSuelo = true
-            saltosRestantes = saltosMaximos  // recarga todos los saltos al tocar suelo
+            saltosRestantes = saltosMaximos
         }
 
-        // Progreso
         distancia += velObst * dt * multiplicadorProgreso
         if (obstaculosSaltados >= minSaltadosDinamico) {
             canciones[cancionActual]?.pause()
@@ -405,7 +433,6 @@ class BrumBrum : ApplicationAdapter() {
             return
         }
 
-        // Bola de fuego
         if (bolaActiva) {
             bolaX += velObst * 2 * dt
             if (bolaX > W + 50) {
@@ -414,64 +441,50 @@ class BrumBrum : ApplicationAdapter() {
                 val bolaRect = Rectangle(bolaX - 12, bolaY - 12, 24f, 24f)
                 val it = obstaculos.iterator()
                 while (it.hasNext()) {
-                    if (bolaRect.overlaps(it.next())) {
-                        it.remove()
-                        bolaActiva = false
-                        break
+                    if (bolaRect.overlaps(it.next().rect)) {
+                        it.remove(); bolaActiva = false; break
                     }
                 }
             }
         }
 
-        // Generar obstáculos
         timerObst += dt
         if (timerObst >= intervalo) {
             timerObst = 0f
             val h = (40f + (Math.random() * 40).toFloat()) * alturaMultObst
-            obstaculos.add(Rectangle(W + 10f, SUELO_Y, 40f, h))
+            val nombre = nombresTransportistas.random()
+            obstaculos.add(Obstaculo(Rectangle(W + 10f, SUELO_Y, 40f, h), nombre))
         }
 
-        // Colisiones
         val truck = Rectangle(truckX + 5, truckY, truckW - 10, truckH)
         val it = obstaculos.iterator()
         while (it.hasNext()) {
             val obs = it.next()
-            obs.x -= velObst * effectDt
-            if (obs.x + obs.width < 0) { it.remove(); obstaculosSaltados++; continue }
+            obs.rect.x -= velObst * effectDt
+            if (obs.rect.x + obs.rect.width < 0) { it.remove(); obstaculosSaltados++; continue }
 
-            val colision = invulnerable <= 0 && fantasmaActivo <= 0 && truck.overlaps(obs)
+            val colision = invulnerable <= 0 && fantasmaActivo <= 0 && truck.overlaps(obs.rect)
             if (colision) {
-                // 1) Romper primero (usa 1 carga)
                 if (rompeRestantes > 0) {
-                    it.remove()
-                    rompeRestantes--
-                    continue
+                    it.remove(); rompeRestantes--; continue
                 }
-                // 2) Escudo (usa 1 carga)
                 if (escudosRestantes > 0) {
-                    escudosRestantes--
-                    invulnerable = duracionInvul
-                    continue
+                    escudosRestantes--; invulnerable = duracionInvul; continue
                 }
-                // 3) Explosión (usa 1 carga, quita vida)
                 if (explosionesRestantes > 0) {
-                    obstaculos.clear()
-                    explosionesRestantes--
-                    vidas--
-                    invulnerable = duracionInvul
+                    obstaculos.clear(); explosionesRestantes--
+                    vidas--; invulnerable = duracionInvul; golpesEnRuta++
                 } else {
-                    vidas--
-                    invulnerable = duracionInvul
+                    vidas--; invulnerable = duracionInvul; golpesEnRuta++
                 }
 
                 if (vidas <= 0) {
                     if (segundasOportRestantes > 0) {
-                        vidas = 1
-                        segundasOportRestantes--
-                        invulnerable = 2f
+                        vidas = 1; segundasOportRestantes--; invulnerable = 2f
                     } else {
                         estado = Estado.PERDIDO
                         canciones[cancionActual]?.stop()
+                        guardarPartidaYActualizarRecord()
                     }
                 }
             }
@@ -484,45 +497,45 @@ class BrumBrum : ApplicationAdapter() {
     private fun dibujar(W: Float, H: Float) {
         shape.begin(ShapeRenderer.ShapeType.Filled)
 
-        // Carretera
         shape.color = Color.DARK_GRAY
         shape.rect(0f, 0f, W, SUELO_Y + 5)
         shape.color = Color.YELLOW
         var x = 0f
         while (x < W) { shape.rect(x, SUELO_Y / 2 - 5, 50f, 8f); x += 80f }
 
-        // Obstáculos
         for (obs in obstaculos) {
             shape.color = Color.BROWN
-            shape.rect(obs.x, obs.y, obs.width, obs.height)
+            shape.rect(obs.rect.x, obs.rect.y, obs.rect.width, obs.rect.height)
             shape.color = Color.TAN
-            shape.rect(obs.x + obs.width / 2 - 3, obs.y, 6f, obs.height)
-            shape.rect(obs.x, obs.y + obs.height / 2 - 3, obs.width, 6f)
+            shape.rect(obs.rect.x + obs.rect.width / 2 - 3, obs.rect.y, 6f, obs.rect.height)
+            shape.rect(obs.rect.x, obs.rect.y + obs.rect.height / 2 - 3, obs.rect.width, 6f)
         }
 
-        // Escudo visual (más grande según stacks)
+        shape.end()
+
+        batch.begin()
+        for (obs in obstaculos) {
+            fontPequena.color = Color.WHITE
+            fontPequena.draw(batch, obs.nombre, obs.rect.x - 10f, obs.rect.y + obs.rect.height + 20f)
+        }
+        batch.end()
+
+        shape.begin(ShapeRenderer.ShapeType.Filled)
+
         if (escudosRestantes > 0) {
             shape.color = Color(0.3f, 0.7f, 1f, 0.4f)
             shape.circle(truckX + truckW / 2, truckY + truckH / 2, truckW * 0.75f)
         }
-
-        // Fantasma visual
         if (fantasmaActivo > 0) {
             shape.color = Color(1f, 1f, 1f, 0.3f)
             shape.rect(truckX, truckY, truckW, truckH)
         }
-
-        // Bola de fuego
         if (bolaActiva) {
-            shape.color = Color.ORANGE
-            shape.circle(bolaX, bolaY, 14f)
-            shape.color = Color.RED
-            shape.circle(bolaX, bolaY, 8f)
-            shape.color = Color.YELLOW
-            shape.circle(bolaX, bolaY, 4f)
+            shape.color = Color.ORANGE; shape.circle(bolaX, bolaY, 14f)
+            shape.color = Color.RED;    shape.circle(bolaX, bolaY, 8f)
+            shape.color = Color.YELLOW; shape.circle(bolaX, bolaY, 4f)
         }
 
-        // Camión
         val parpadea = invulnerable > 0 && (invulnerable * 6).toInt() % 2 == 0
         val colorBase = when {
             fantasmaActivo > 0 -> Color(1f, 1f, 1f, 0.5f)
@@ -545,7 +558,6 @@ class BrumBrum : ApplicationAdapter() {
     }
 
     private fun dibujarHUD(W: Float, H: Float) {
-        // Barra de progreso
         val progreso = minOf(obstaculosSaltados.toFloat() / minSaltadosDinamico, 1f)
         shape.begin(ShapeRenderer.ShapeType.Filled)
         shape.color = Color.WHITE; shape.rect(20f, H - 40, W - 40, 18f)
@@ -559,42 +571,14 @@ class BrumBrum : ApplicationAdapter() {
         font.draw(batch, "Ruta: $pct%", W / 2 - 80, H - 50f)
         font.draw(batch, "Saltos: $obstaculosSaltados/$minSaltadosDinamico", W - 220f, H - 50f)
 
-        // Iconos de power-ups con contadores de stacks
         var iconX = 20f
-        if (escudosRestantes > 0) {
-            fontPequena.color = Color.CYAN
-            fontPequena.draw(batch, "[ESC]x$escudosRestantes", iconX, H - 80f)
-            iconX += 110f
-        }
-        if (bolasRestantes > 0) {
-            fontPequena.color = Color.ORANGE
-            fontPequena.draw(batch, "[FIRE]x$bolasRestantes [F]", iconX, H - 80f)
-            iconX += 140f
-        }
-        if (saltosMaximos > 1) {
-            fontPequena.color = Color.YELLOW
-            fontPequena.draw(batch, "[DBL]x$saltosRestantes/${saltosMaximos - 1}", iconX, H - 80f)
-            iconX += 120f
-        }
-        if (fantasmaActivo > 0) {
-            fontPequena.color = Color.WHITE
-            fontPequena.draw(batch, "[FTM] ${fantasmaActivo.toInt()}s", iconX, H - 80f)
-            iconX += 100f
-        }
-        if (rompeRestantes > 0) {
-            fontPequena.color = Color(1f, 0.6f, 0.2f, 1f)
-            fontPequena.draw(batch, "[DRO]x$rompeRestantes", iconX, H - 80f)
-            iconX += 100f
-        }
-        if (segundasOportRestantes > 0) {
-            fontPequena.color = Color.GREEN
-            fontPequena.draw(batch, "[2ND]x$segundasOportRestantes", iconX, H - 80f)
-            iconX += 110f
-        }
-        if (explosionesRestantes > 0) {
-            fontPequena.color = Color.RED
-            fontPequena.draw(batch, "[EXP]x$explosionesRestantes", iconX, H - 80f)
-        }
+        if (escudosRestantes > 0)      { fontPequena.color = Color.CYAN;                         fontPequena.draw(batch, "[ESC]x$escudosRestantes", iconX, H - 80f);              iconX += 110f }
+        if (bolasRestantes > 0)        { fontPequena.color = Color.ORANGE;                        fontPequena.draw(batch, "[FIRE]x$bolasRestantes [F]", iconX, H - 80f);           iconX += 140f }
+        if (saltosMaximos > 1)         { fontPequena.color = Color.YELLOW;                        fontPequena.draw(batch, "[DBL]x$saltosRestantes/${saltosMaximos - 1}", iconX, H - 80f); iconX += 120f }
+        if (fantasmaActivo > 0)        { fontPequena.color = Color.WHITE;                         fontPequena.draw(batch, "[FTM] ${fantasmaActivo.toInt()}s", iconX, H - 80f);     iconX += 100f }
+        if (rompeRestantes > 0)        { fontPequena.color = Color(1f, 0.6f, 0.2f, 1f);          fontPequena.draw(batch, "[DRO]x$rompeRestantes", iconX, H - 80f);                iconX += 100f }
+        if (segundasOportRestantes > 0){ fontPequena.color = Color.GREEN;                         fontPequena.draw(batch, "[2ND]x$segundasOportRestantes", iconX, H - 80f);        iconX += 110f }
+        if (explosionesRestantes > 0)  { fontPequena.color = Color.RED;                           fontPequena.draw(batch, "[EXP]x$explosionesRestantes", iconX, H - 80f) }
 
         if (rutasCompletadas > 0) {
             fontPequena.color = Color(0.7f, 0.7f, 1f, 1f)
@@ -647,9 +631,7 @@ class BrumBrum : ApplicationAdapter() {
             val m = opcionesMejora.getOrNull(i) ?: continue
             val cx = startX + i * (cardW + GAP)
             rectOpciones[i].set(cx, cardY, cardW, cardH)
-
             val colorBorde = colorDeRareza(m.rareza)
-
             shape.color = colorBorde
             shape.rect(cx - 3f, cardY - 3f, cardW + 6f, cardH + 6f)
             shape.color = Color(0.10f, 0.10f, 0.20f, 1f)
@@ -672,11 +654,9 @@ class BrumBrum : ApplicationAdapter() {
             val cx = startX + i * (cardW + GAP)
             val colorBorde = colorDeRareza(m.rareza)
 
-            val labelRareza = m.rareza.name
             fontPequena.color = Color(0.05f, 0.05f, 0.05f, 1f)
-            fontPequena.draw(batch, labelRareza, cx + 8f, cardY + cardH - 8f)
+            fontPequena.draw(batch, m.rareza.name, cx + 8f, cardY + cardH - 8f)
 
-            // Mostrar cuántos stacks tiene ya el jugador de esta mejora
             val stacksActuales = stacksDe(m.id)
             fontPequena.color = colorBorde
             val tagConStack = if (stacksActuales > 0) "${m.emoji} x${stacksActuales + 1}" else m.emoji
@@ -685,22 +665,17 @@ class BrumBrum : ApplicationAdapter() {
             font.color = Color.WHITE
             val nombreLineas = wrapTexto(m.nombre, cardW - 16f, 15f)
             var ny = cardY + cardH - 80f
-            for (linea in nombreLineas) {
-                font.draw(batch, linea, cx + 8f, ny)
-                ny -= 36f
-            }
+            for (linea in nombreLineas) { font.draw(batch, linea, cx + 8f, ny); ny -= 36f }
 
             fontPequena.color = Color(0.75f, 0.75f, 0.88f, 1f)
             val descLineas = wrapTexto(m.descripcion, cardW - 16f, 12f)
             var dy = ny - 8f
             for (linea in descLineas) {
                 if (dy < cardY + 8f) break
-                fontPequena.draw(batch, linea, cx + 8f, dy)
-                dy -= 26f
+                fontPequena.draw(batch, linea, cx + 8f, dy); dy -= 26f
             }
         }
 
-        // Resumen de mejoras acumuladas
         if (stacksMejoras.isNotEmpty()) {
             fontPequena.color = Color(0.45f, 0.45f, 0.65f, 1f)
             val resumen = stacksMejoras.entries.joinToString("  ") { (id, n) -> if (n > 1) "$id x$n" else id }
@@ -724,11 +699,8 @@ class BrumBrum : ApplicationAdapter() {
         var linea = ""
         for (p in palabras) {
             val test = if (linea.isEmpty()) p else "$linea $p"
-            if (test.length > maxChars && linea.isNotEmpty()) {
-                lineas.add(linea); linea = p
-            } else {
-                linea = test
-            }
+            if (test.length > maxChars && linea.isNotEmpty()) { lineas.add(linea); linea = p }
+            else linea = test
         }
         if (linea.isNotEmpty()) lineas.add(linea)
         return lineas
@@ -736,22 +708,34 @@ class BrumBrum : ApplicationAdapter() {
 
     private fun dibujarMenuPausa(W: Float, H: Float) {
         shape.begin(ShapeRenderer.ShapeType.Filled)
-        shape.color = Color(0f, 0f, 0f, 0.65f); shape.rect(0f, 0f, W, H)
-        shape.color = Color(0.15f, 0.15f, 0.15f, 1f); shape.rect(W / 2 - 160f, H / 2 - 120f, 320f, 220f)
-        shape.color = Color(0.2f, 0.75f, 0.2f, 1f); shape.rect(btnContinuar.x, btnContinuar.y, btnContinuar.width, btnContinuar.height)
-        shape.color = Color(0.85f, 0.2f, 0.2f, 1f); shape.rect(btnSalir.x, btnSalir.y, btnSalir.width, btnSalir.height)
+        shape.color = Color(0f, 0f, 0f, 0.65f);           shape.rect(0f, 0f, W, H)
+        shape.color = Color(0.15f, 0.15f, 0.15f, 1f);     shape.rect(W / 2 - 160f, H / 2 - 120f, 320f, 220f)
+        shape.color = Color(0.2f, 0.75f, 0.2f, 1f);       shape.rect(btnContinuar.x, btnContinuar.y, btnContinuar.width, btnContinuar.height)
+        shape.color = Color(0.85f, 0.2f, 0.2f, 1f);       shape.rect(btnSalir.x, btnSalir.y, btnSalir.width, btnSalir.height)
+        shape.color = Color(0.6f, 0.1f, 0.1f, 1f)
+        shape.rect(btnBorrarRecord.x, btnBorrarRecord.y, btnBorrarRecord.width, btnBorrarRecord.height)
         shape.end()
+
         batch.begin()
         font.color = Color.WHITE
         font.draw(batch, "PAUSA", W / 2 - 55f, H / 2 + 85f)
         fontPequena.color = Color.WHITE
         fontPequena.draw(batch, "Continuar", btnContinuar.x + 40f, btnContinuar.y + 38f)
         fontPequena.draw(batch, "Salir al menu", btnSalir.x + 20f, btnSalir.y + 38f)
+        fontPequena.draw(batch, "Borrar record", btnBorrarRecord.x + 25f, btnBorrarRecord.y + 38f)
+
         if (stacksMejoras.isNotEmpty()) {
             fontPequena.color = Color(0.7f, 0.7f, 1f, 1f)
             val resumen = stacksMejoras.entries.joinToString(", ") { (id, n) -> if (n > 1) "$id x$n" else id }
             fontPequena.draw(batch, resumen, W / 2 - 150f, H / 2 - 160f)
         }
+
+        // ─── Puntuación en el menú de pausa ───────────────────────────────
+        fontPequena.color = Color.YELLOW
+        fontPequena.draw(batch, "Puntuacion: $puntuacion", 20f, 60f)
+        fontPequena.color = Color(0.7f, 0.7f, 0.7f, 1f)
+        fontPequena.draw(batch, "Record: $puntuacionServidor", 20f, 35f)
+
         batch.end()
     }
 
@@ -766,8 +750,10 @@ class BrumBrum : ApplicationAdapter() {
             font.color = Color.RED
             font.draw(batch, "MERCANCIA DANADA!", W / 2 - 180, H / 2 + 30f)
         }
+        fontPequena.color = Color.YELLOW
+        fontPequena.draw(batch, "Puntuacion: $puntuacion", W / 2 - 100f, H / 2 - 40f)
         font.color = Color.WHITE
-        font.draw(batch, "Toca para jugar de nuevo", W / 2 - 200, H / 2 - 60f)
+        font.draw(batch, "Toca para jugar de nuevo", W / 2 - 200, H / 2 - 80f)
         batch.end()
     }
 
@@ -787,16 +773,64 @@ class BrumBrum : ApplicationAdapter() {
         val bonus = rutasCompletadas
         minSaltadosDinamico = 5 + bonus * 2
 
-        // Velocidad base progresiva + reducción por stacks de velObst
         val velBase = 500f + bonus * 30f
         val factorVelObst = Math.pow(0.9, stacksDe("velObst").toDouble()).toFloat()
         velObst = velBase * factorVelObst
 
-        // Slow perm encima de todo
         if (slowPermActivo) {
             val factorSlow = Math.pow(0.6, stacksDe("slowPerm").toDouble()).toFloat()
             velObst *= factorSlow
             gravedad *= Math.pow(0.75, stacksDe("slowPerm").toDouble()).toFloat()
         }
+    }
+
+    // DylanExtra
+    private fun guardarPartidaYActualizarRecord() {
+        if (usuarioId == -1) return
+
+        Thread {
+            try {
+                runBlocking {
+                    // POST
+                    val postResponse = RetrofitClient.api.crearPartida(
+                        PartidaRequest(
+                            usuariId   = usuarioId,
+                            puntuacion = puntuacion
+                        )
+                    )
+                    println("POST partida: ${postResponse.code()} - ${postResponse.errorBody()?.string()}")
+
+                    // GET
+                    val response = RetrofitClient.api.getRecord(usuarioId)
+                    println("GET record: ${response.code()} - body: ${response.body()}")
+
+                    if (response.isSuccessful) {
+                        val recordActual = response.body() ?: 0
+                        println("Puntuacion actual: $puntuacion, Record servidor: $recordActual")
+
+                        if (puntuacion > recordActual) {
+                            val putResponse = RetrofitClient.api.updateRecord(
+                                id   = usuarioId,
+                                body = RecordRequest(puntuacion = puntuacion)
+                            )
+                            println("PUT record: ${putResponse.code()} - ${putResponse.errorBody()?.string()}")
+                            puntuacionServidor = puntuacion
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                println("ERROR guardarPartida: ${e.message}")
+            }
+        }.start()
+    }
+
+    private fun resetearRecord() {
+        if (usuarioId == -1) return
+        Thread {
+            try {
+                runBlocking { RetrofitClient.api.deleteRecord(usuarioId) }
+                puntuacionServidor = 0
+            } catch (e: Exception) { }
+        }.start()
     }
 }
