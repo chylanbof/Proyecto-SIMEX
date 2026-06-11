@@ -5,11 +5,9 @@ Solución integral para la automatización y administración de operaciones log�
 ## 🚀 Características principales
 * **API REST:** Arquitectura backend diseñada para gestionar flujos de trabajo logísticos e intercambiar información de forma eficiente.
 * **Aplicación Móvil:** App Android integrada para la consulta y actualización del estado de los envíos.
-* **Integración ERP:** Desarrollo de módulos personalizados e integración de procesos empresariales mediante Odoo.
 * **Análisis Funcional:** Estructura de base de datos relacional modelada exhaustivamente mediante diagramas UML.
 
 ## 🛠️ Tecnologías utilizadas
 * **Backend & API:** .NET, C# 
 * **Base de Datos:** SQL Server 
-* **Móvil:** Kotlin, Retrofit (para consumo de la API)
-* **ERP & Datos:** Python, Odoo # Proyecto-SIMEX
+* **Móvil:** Kotlin, Retrofit (para consumo de la API) # Proyecto-SIMEX
