@@ -1,15 +1,15 @@
 # Plataforma de Gestión Logística Internacional 🌐📦
 
-[cite_start]Solución integral para la automatización y administración de operaciones logísticas a nivel internacional, conectando un backend robusto con una aplicación móvil para el control en tiempo real[cite: 60].
+Solución integral para la automatización y administración de operaciones logísticas a nivel internacional, conectando un backend robusto con una aplicación móvil para el control en tiempo real.
 
 ## 🚀 Características principales
-* [cite_start]**API REST:** Arquitectura backend diseñada para gestionar flujos de trabajo logísticos e intercambiar información de forma eficiente[cite: 60].
-* [cite_start]**Aplicación Móvil:** App Android integrada para la consulta y actualización del estado de los envíos[cite: 60].
-* [cite_start]**Integración ERP:** Desarrollo de módulos personalizados e integración de procesos empresariales mediante Odoo[cite: 59, 61].
-* [cite_start]**Análisis Funcional:** Estructura de base de datos relacional modelada exhaustivamente mediante diagramas UML[cite: 61].
+* **API REST:** Arquitectura backend diseñada para gestionar flujos de trabajo logísticos e intercambiar información de forma eficiente.
+* **Aplicación Móvil:** App Android integrada para la consulta y actualización del estado de los envíos.
+* **Integración ERP:** Desarrollo de módulos personalizados e integración de procesos empresariales mediante Odoo.
+* **Análisis Funcional:** Estructura de base de datos relacional modelada exhaustivamente mediante diagramas UML.
 
 ## 🛠️ Tecnologías utilizadas
-* [cite_start]**Backend & API:** .NET, C# [cite: 59, 60]
-* [cite_start]**Base de Datos:** SQL Server [cite: 59]
-* [cite_start]**Móvil:** Kotlin, Retrofit (para consumo de la API) [cite: 59, 60]
-* [cite_start]**ERP & Datos:** Python, Odoo [cite: 59]﻿# Proyecto-SIMEX
+* **Backend & API:** .NET, C# 
+* **Base de Datos:** SQL Server 
+* **Móvil:** Kotlin, Retrofit (para consumo de la API)
+* **ERP & Datos:** Python, Odoo # Proyecto-SIMEX
