@@ -5,6 +5,7 @@
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <ImageView
         android:id="@+id/imgBackgroundHeader"
         android:layout_width="0dp"
@@ -18,19 +19,56 @@
 
 
     <ImageButton
-        android:id="@+id/btnNotificaciones"
+        android:id="@+id/btnAtras"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:background="@drawable/rounded_button"
-        app:backgroundTint="@null"
+        app:backgroundTint="#FD7121"
+        app:tint="@null"
         android:src="@drawable/ic_atras"
         android:scaleType="fitCenter"
         android:padding="12dp"
         android:contentDescription="Atras"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnChat"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#FD7121"
+        android:minWidth="0dp"
+        android:paddingHorizontal="14dp"
+        android:drawableStart="@drawable/ic_smile"
+        android:drawablePadding="6dp"
+        android:text="Chat"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btnExit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_button"
+        app:backgroundTint="@null"
+        android:src="@drawable/ic_exit"
+        android:scaleType="centerInside"
+        android:padding="12dp"
+        android:contentDescription="Cerrar sesión"
+
+        app:layout_constraintTop_toBottomOf="@id/btnChat"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
         android:layout_width="0dp"
@@ -66,23 +104,6 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cerrarSesion"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#145699"
-            android:minWidth="0dp"
-            android:paddingHorizontal="12dp"
-            android:drawableStart="@drawable/ic_perfil_xml"
-            android:drawablePadding="8dp"
-            android:text="Cerrar Sesion"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textAllCaps="false"
-            app:drawableTint="#FFFFFF"/>
 
     </LinearLayout>
 

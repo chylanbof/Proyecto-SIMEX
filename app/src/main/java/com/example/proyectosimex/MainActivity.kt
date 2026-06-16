@@ -5,10 +5,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.widget.ImageView
 import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
+import com.example.proyectosimex.clases.LoginRequest
+import kotlinx.coroutines.*
+import com.example.proyectosimex.api.RetrofitClient
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +27,54 @@ class MainActivity : AppCompatActivity() {
         val textBoxPassword = findViewById<EditText>(R.id.contraseñaTextBox)
         val btnIniciarSesion = findViewById<Button>(R.id.btnLogin)
         btnIniciarSesion.setOnClickListener {
+
             val usuario = textBoxUsuario.text.toString()
-            val intent = Intent(this, Dashboard::class.java)
-            intent.putExtra("usuario_nombre", usuario)
-            startActivity(intent)
+            val password = textBoxPassword.text.toString()
+
+            val request = LoginRequest(usuario, password)
+
+            CoroutineScope(Dispatchers.IO).launch { //hace una llamada a internet en segundo plano
+                //para que la app no se congele mientras espera la respuesta
+                try {
+                    val response = RetrofitClient.api.login(request) //la respuesta es lo que le diga el login
+                    // de la api
+
+                    withContext(Dispatchers.Main) { //vuelve al hilo principal para que la app no pete
+
+                        if (response.isSuccessful) {
+                            val user = response.body() //user es igual al contenido que devolvio la api
+
+                            val intent = when (user?.rolId) {
+                                4 -> Intent(this@MainActivity, AgenteComercial::class.java)  // rol 4 = agente
+                                else -> Intent(this@MainActivity, Dashboard::class.java)      // rol 3 = cliente
+                            }
+
+                            intent.putExtra("usuario_nombre", user?.nom)
+                            intent.putExtra("usuario_id", user?.id)
+                            intent.putExtra("usuario_cognoms", user?.cognoms)
+                            intent.putExtra("usuario_empresa", user?.empresa)
+                            intent.putExtra("usuario_telefon", user?.telefon)
+                            startActivity(intent)
+
+                        } else {
+                            android.widget.Toast.makeText(
+                                this@MainActivity,
+                                "Usuario o contraseña incorrectos",
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        android.widget.Toast.makeText(
+                            this@MainActivity,
+                            "Error conexión: ${e.message}",
+                            android.widget.Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
         }
     }
-} //comentario para guardar la rama
+}

@@ -1,4 +1,4 @@
-package com.example.proyectosimex.Clases
+package com.example.proyectosimex.clases
 
 import com.google.gson.annotations.SerializedName
 
@@ -14,5 +14,7 @@ data class Usuario(
     @SerializedName("rolId") val rolId: Int? = null,
 
     // Para el nombre del rol (texto que viene en el resumen)
-    @SerializedName("rol") val rol: String? = null
-                  )
+    @SerializedName("rol") val rol: String? = null,
+    @SerializedName("telefon") val telefon: String?,   // ← añadir
+    @SerializedName("dniFoto") val dniFoto: String?
+)

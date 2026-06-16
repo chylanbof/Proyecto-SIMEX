@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="24dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="#D0C8E8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Fila superior: Avatar + ID + Subtítulo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvPopupAvatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ic_persona"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginEnd="14dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPopupIdPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="EC001"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A"/>
+
+                <TextView
+                    android:id="@+id/tvPopupTipoPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Exportacion Maritima"
+                    android:textSize="13sp"
+                    android:textColor="#555555"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Separador -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#B0A8D0"
+            android:layout_marginBottom="14dp"/>
+
+        <!-- Nombre del envío -->
+        <TextView
+            android:id="@+id/tvPopupNombreEnvio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Envio de Material Liturgico"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Empresa -->
+        <TextView
+            android:id="@+id/tvPopupEmpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Empresa PMP"
+            android:textSize="13sp"
+            android:textColor="#555555"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Lista de detalles con bullets -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Pago -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top"
+                android:layout_marginBottom="6dp"
+                android:visibility="gone"
+                android:id="@+id/rowPago">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• "
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:id="@+id/tvPopupPago"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Pago: Paypal"
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+            </LinearLayout>
+
+            <!-- Fecha de pedido -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top"
+                android:layout_marginBottom="6dp"
+                android:visibility="gone"
+                android:id="@+id/rowFecha">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• "
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:id="@+id/tvPopupFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Fecha de pedido: 12 abril 2025"
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+            </LinearLayout>
+
+            <!-- País destino -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="top"
+                android:id="@+id/rowPaisDestino"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• "
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:id="@+id/tvPopupPaisDestino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Pais destino: China"
+                    android:textSize="13sp"
+                    android:textColor="#333333"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Separador inferior -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#B0A8D0"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

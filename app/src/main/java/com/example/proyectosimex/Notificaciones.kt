@@ -16,7 +16,7 @@ class Notificaciones : AppCompatActivity(){
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.popup_notificaciones)
-        //Variable para llamar al boton externo
+
 
 
 
